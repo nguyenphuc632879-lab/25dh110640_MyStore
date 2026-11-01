@@ -1,0 +1,63 @@
+@* BE#5: Chi tiết khách hàng + danh sách đơn hàng của khách hàng đó *@
+@model MyStore.Models.Customer
+@{
+    ViewBag.Title = "Chi tiết khách hàng";
+    var orders = ViewBag.Orders as IEnumerable<MyStore.Models.Order> ?? new List<MyStore.Models.Order>();
+}
+
+<div class="form-title">Thông tin khách hàng</div>
+<div class="form-box">
+    <dl class="dl-horizontal">
+        <dt>Mã khách hàng</dt>
+        <dd>@Model.CustomerID</dd>
+        <dt>Tên đăng nhập</dt>
+        <dd>@Model.Username</dd>
+        <dt>Họ tên</dt>
+        <dd>@Model.CustomerName</dd>
+        <dt>Số điện thoại</dt>
+        <dd>@Model.CustomerPhone</dd>
+        <dt>Email</dt>
+        <dd>@Model.CustomerEmail</dd>
+        <dt>Địa chỉ</dt>
+        <dd>@Model.CustomerAddress</dd>
+        <dt>Quyền</dt>
+        <dd>@MyStore.Models.UserRoles.GetDisplayName(Model.User != null ? Model.User.UserRole : "")</dd>
+    </dl>
+</div>
+
+<!-- ============ DANH SÁCH ĐƠN HÀNG CỦA KHÁCH HÀNG NÀY ============ -->
+<div class="form-title">Danh sách đơn hàng</div>
+<div class="form-box">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Mã đơn</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in orders)
+            {
+                <tr>
+                    <td>@o.OrderID</td>
+                    <td>@String.Format("{0:dd/MM/yyyy}", o.OrderDate)</td>
+                    <td>@String.Format("{0:#,##0}", o.TotalAmount) đ</td>
+                    <td>@o.PaymentStatus</td>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "OrderDetails", new { id = o.OrderID }, new { @class = "btn btn-info btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!orders.Any())
+    {
+        <p class="text-muted">Khách hàng này chưa có đơn hàng nào.</p>
+    }
+
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+</div>

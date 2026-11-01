@@ -1,0 +1,73 @@
+@* BE#5: Danh sách khách hàng - tìm kiếm, sắp xếp, phân trang *@
+@model MyStore.Models.ViewModel.CustomerSearchVM
+@{
+    ViewBag.Title = "Quản lý Khách hàng";
+}
+
+@using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+{
+    <div class="row" style="margin-bottom:12px;">
+        <div class="col-md-4">
+            @Html.TextBox("SearchTerm", Model.SearchTerm, new { @class = "form-control", placeholder = "Tìm theo tên, tài khoản, SĐT, email..." })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("SortOrder", new SelectList(new[]
+            {
+                new SelectListItem { Text = "Tên A-Z",       Value = "name" },
+                new SelectListItem { Text = "Tên Z-A",       Value = "name_desc" },
+                new SelectListItem { Text = "Ngày sinh tăng", Value = "date" },
+                new SelectListItem { Text = "Ngày sinh giảm", Value = "date_desc" }
+            }, "Value", "Text", Model.SortOrder), new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th style="width:60px;">Mã</th>
+            <th>Họ tên</th>
+            <th>Tên đăng nhập</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+            <th style="width:180px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>@item.CustomerID</td>
+                <td>@item.CustomerName</td>
+                <td>@item.Username</td>
+                <td>@item.CustomerPhone</td>
+                <td>@item.CustomerEmail</td>
+                <td>@item.CustomerAddress</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.CustomerID }, new { @class = "btn btn-info btn-sm" })
+                    @Html.ActionLink("Đơn hàng", "Orders", new { id = item.CustomerID }, new { @class = "btn btn-primary btn-sm" })
+                    @using (Html.BeginForm("Delete", "Customers", new { id = item.CustomerID }, FormMethod.Post, new { style = "display:inline-block;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete('Xoá khách hàng này?')">Xoá</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Customers.Any())
+{
+    <div class="alert alert-info">Không tìm thấy khách hàng nào.</div>
+}
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model.Customers, page => Url.Action("Index", "Customers",
+        new { page = page, SearchTerm = Model.SearchTerm, SortOrder = Model.SortOrder }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

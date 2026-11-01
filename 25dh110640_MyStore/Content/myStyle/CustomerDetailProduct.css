@@ -1,0 +1,81 @@
+/* ====== CustomerDetailProduct.css - Style riêng trang Chi tiết sản phẩm ====== */
+
+.detail-box {
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.detail-image {
+    text-align: center;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.detail-image img {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+}
+
+.detail-info h2 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.detail-price {
+    color: #ff3d00;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 12px 0;
+}
+
+.detail-desc {
+    color: #555;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.detail-quantity {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.detail-quantity input {
+    width: 70px;
+    text-align: center;
+    margin: 0 8px;
+}
+
+.detail-actions .btn {
+    min-width: 150px;
+    margin-right: 10px;
+}
+
+.sub-total {
+    font-size: 18px;
+    color: #ff3d00;
+    font-weight: 700;
+    margin-left: 15px;
+}
+
+/* ------------------------- Sản phẩm liên quan -------------------------- */
+.related-box {
+    background: #fff;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.related-box .product-card {
+    height: 260px;
+}
+
+/* ------------------------------ Top deals ------------------------------ */
+.top-deals .product-card {
+    height: 280px;
+}

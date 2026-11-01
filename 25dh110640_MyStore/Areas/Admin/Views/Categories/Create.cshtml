@@ -1,0 +1,19 @@
+@* BE#2: Thêm mới danh mục *@
+@model MyStore.Models.Category
+@{
+    ViewBag.Title = "Thêm mới danh mục";
+}
+
+<div class="form-title">Thêm mới danh mục</div>
+<div class="form-box">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("PVCreateEditCategory", Model)
+
+        <button type="submit" class="btn btn-danger">Lưu</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

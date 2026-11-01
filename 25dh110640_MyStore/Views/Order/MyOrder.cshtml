@@ -1,0 +1,102 @@
+@* Trang Đơn hàng của tôi - Lịch sử mua hàng (BE#7-4.3) *@
+@model MyStore.Models.ViewModel.MyOrderVM
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    var statuses = new[] { "Tất cả", "Chờ thanh toán", "Đang xử lý", "Đang vận chuyển", "Đã giao", "Đã huỷ" };
+}
+
+<h3 class="section-title">Đơn hàng của tôi</h3>
+
+<!-- ==================== PHẦN TÌM KIẾM ĐƠN HÀNG ==================== -->
+@using (Html.BeginForm("MyOrder", "Order", FormMethod.Get))
+{
+    <div class="row" style="margin-bottom:15px;">
+        <div class="col-md-5">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Tìm theo mã đơn hoặc tên sản phẩm..." />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<!-- ==================== TAB TRẠNG THÁI ĐƠN HÀNG ==================== -->
+<ul class="nav nav-tabs">
+    @foreach (var st in statuses)
+    {
+        <li class="@(Model.Status == st ? "active" : "")">
+            @Html.ActionLink(st, "MyOrder", "Order", new { status = st, searchTerm = Model.SearchTerm }, null)
+        </li>
+    }
+</ul>
+
+<div class="form-box">
+    @if (!Model.Orders.Any())
+    {
+        <p class="text-muted">Không có đơn hàng nào.</p>
+    }
+    else
+    {
+        // Tab "Tất cả": gom nhóm các đơn hàng theo trạng thái (theo thứ tự các tab)
+        var ordered = Model.Status == "Tất cả"
+            ? Model.Orders.OrderBy(o => Array.IndexOf(statuses, o.PaymentStatus) < 0 ? 99 : Array.IndexOf(statuses, o.PaymentStatus)).ThenByDescending(o => o.OrderDate).ToList()
+            : Model.Orders.ToList();
+        string lastStatus = null;
+        foreach (var order in ordered)
+        {
+            if (Model.Status == "Tất cả" && order.PaymentStatus != lastStatus)
+            {
+                lastStatus = order.PaymentStatus;
+                <h4 class="text-primary" style="margin-top:15px;">@lastStatus</h4>
+            }
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Đơn hàng #@order.OrderID</strong> -
+                    @String.Format("{0:dd/MM/yyyy}", order.OrderDate) -
+                    <span class="label label-warning">@order.PaymentStatus</span>
+                    @if (!string.IsNullOrEmpty(order.PaymentMethod)) { <span class="text-muted">- @order.PaymentMethod</span> }
+                </div>
+                <div class="panel-body">
+                    <p>Tổng tiền: <strong class="text-danger">@String.Format("{0:#,##0}", order.TotalAmount) đ</strong></p>
+                    <p>Địa chỉ giao hàng: @order.ShippingAddress</p>
+
+                    <table class="table table-condensed">
+                        @foreach (var d in order.OrderDetails)
+                        {
+                            <tr>
+                                <td>@(d.Product != null ? d.Product.ProductName : "#" + d.ProductID)</td>
+                                <td>x @d.Quantity</td>
+                                <td class="text-right">@String.Format("{0:#,##0}", d.TotalPrice) đ</td>
+                            </tr>
+                        }
+                    </table>
+
+                    @Html.ActionLink("Xem chi tiết", "OrderDetail", "Order", new { id = order.OrderID }, new { @class = "btn btn-default btn-sm" })
+
+                    using (Html.BeginForm("Reorder", "Order", FormMethod.Post, new { style = "display:inline-block;margin-left:8px;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@order.OrderID" />
+                        <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-repeat"></i> Mua lại</button>
+                    }
+
+                    @if (order.PaymentStatus != "Đã huỷ" && order.PaymentStatus != "Đã giao")
+                    {
+                        using (Html.BeginForm("CancelOrder", "Order", FormMethod.Post, new { style = "display:inline-block;margin-left:8px;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@order.OrderID" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete('Huỷ đơn hàng này?')">Huỷ đơn</button>
+                        }
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="pagination-container">
+            @Html.PagedListPager(Model.Orders, page => Url.Action("MyOrder", "Order",
+                new { page = page, status = Model.Status, searchTerm = Model.SearchTerm }),
+                PagedListRenderOptions.ClassicPlusFirstAndLast)
+        </div>
+    }
+</div>

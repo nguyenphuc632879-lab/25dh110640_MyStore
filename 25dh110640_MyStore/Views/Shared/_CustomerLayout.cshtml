@@ -1,0 +1,79 @@
+@using MyStore.Models
+@using MyStore.Models.ViewModel
+@{
+    var pm = ViewBag.pmmodel as PersonalMenuVM ?? new PersonalMenuVM();
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - MyStore</title>
+
+    <!-- Bootstrap 3 (CDN): mở project lên chạy ngay, không cần chờ restore NuGet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- ============ PHẦN HEADER: banner + menu ============ -->
+    <header class="site-header">
+        <div class="site-banner">
+            <div class="container">
+                <h1>MY STORE</h1>
+                <p>Mua sắm online - Nhanh chóng - Uy tín</p>
+            </div>
+        </div>
+
+        <nav class="main-menu">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <!-- Menu Category: tách thành Partial View _CategoriesPV.cshtml -->
+                    <li>@Html.Action("CategoryMenuPV", "Home")</li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Trang chủ -->
+                    <li>@Html.ActionLink("Trang chủ", "Index", "Home")</li>
+
+                    <!-- Menu cá nhân: dùng _PersonalMenuPV.cshtml -->
+                    <li>@Html.Partial("_PersonalMenuPV", pm)</li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ==================== NỘI DUNG CHÍNH ==================== -->
+    <div class="container body-content">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success">@TempData["Message"]</div>
+        }
+
+        @RenderBody()
+
+        <hr />
+        <!-- ==================== PHẦN FOOTER ==================== -->
+        <footer class="site-footer">
+            <div class="container">
+                <p><strong>Đề tài:</strong> Xây dựng website bán hàng bằng ASP.NET MVC5 - Entity Framework</p>
+                <p><strong>Giảng viên hướng dẫn:</strong> ThS. Bùi Thị Thanh Tú</p>
+                <p><strong>Sinh viên thực hiện:</strong> 25DH110640</p>
+                <p>&copy; @DateTime.Now.Year - MyStore. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ======================== SCRIPTS ======================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    @Scripts.Render("~/bundles/myscript")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,101 @@
+@* Trang Đặt hàng / Thanh toán (BE#7-4.1) *@
+@model MyStore.Models.ViewModel.CheckoutVM
+@{
+    ViewBag.Title = "Đặt hàng";
+}
+
+<h3 class="section-title">Đặt hàng</h3>
+
+@using (Html.BeginForm("Checkout", "Order", FormMethod.Post, new { onsubmit = "return updateShippingAddress()" }))
+{
+    @Html.AntiForgeryToken()
+    @foreach (var id in Model.SelectedIds)
+    {
+        <input type="hidden" name="SelectedIds" value="@id" />
+    }
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-md-7">
+            <!-- ============ PHẦN GIAO TỚI: địa chỉ nhận hàng ============ -->
+            <div class="form-title">Giao tới</div>
+            <div class="form-box">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ShippingAddress)
+                    @Html.TextBoxFor(m => m.ShippingAddress, new { @class = "form-control", @readonly = "readonly" })
+                    <button type="button" class="btn btn-link" onclick="enableAddressEdit()">
+                        <i class="fa fa-pencil"></i> Chỉnh sửa
+                    </button>
+                    @Html.ValidationMessageFor(m => m.ShippingAddress, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Ô nhập địa chỉ mới (ẩn mặc định) -->
+                <div id="newAddressBox" style="display:none;" class="form-group">
+                    <label>Nhập địa chỉ giao hàng mới</label>
+                    <input type="text" id="newShippingAddress" name="newShippingAddress" class="form-control" />
+                </div>
+
+                <p>Người nhận: <strong>@Model.CustomerName</strong> - @Model.CustomerPhone</p>
+            </div>
+
+            <!-- ============ PHẦN HÌNH THỨC GIAO HÀNG ============ -->
+            <div class="form-title">Hình thức giao hàng</div>
+            <div class="form-box">
+                <div class="radio">
+                    <label>@Html.RadioButtonFor(m => m.DeliveryMethod, "Giao hàng tiêu chuẩn") Giao hàng tiêu chuẩn (3-5 ngày)</label>
+                </div>
+                <div class="radio">
+                    <label>@Html.RadioButtonFor(m => m.DeliveryMethod, "Giao hàng hoả tốc") Giao hàng hoả tốc (trong 24h)</label>
+                </div>
+                <div class="radio">
+                    <label>@Html.RadioButtonFor(m => m.DeliveryMethod, "Nhận tại cửa hàng") Nhận tại cửa hàng</label>
+                </div>
+            </div>
+
+            <!-- ============ PHẦN HÌNH THỨC THANH TOÁN ============ -->
+            <div class="form-title">Hình thức thanh toán</div>
+            <div class="form-box">
+                <div class="radio">
+                    <label>@Html.RadioButtonFor(m => m.PaymentMethod, "Thanh toán khi nhận hàng") Thanh toán khi nhận hàng (COD)</label>
+                </div>
+                <div class="radio">
+                    <label>@Html.RadioButtonFor(m => m.PaymentMethod, "PayPal") Thanh toán qua PayPal</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PHẦN ĐƠN HÀNG ==================== -->
+        <div class="col-md-5">
+            <div class="form-title">Đơn hàng (@Model.CartItems.Count mặt hàng)</div>
+            <div class="form-box">
+                <table class="table table-condensed">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>x @item.Quantity</td>
+                            <td class="text-right">@String.Format("{0:#,##0}", item.TotalPrice) đ</td>
+                        </tr>
+                    }
+                </table>
+                <hr />
+                <p>Tổng tiền:
+                    <strong class="text-danger" style="font-size:20px;">
+                        @String.Format("{0:#,##0}", Model.CartItems.Sum(i => i.TotalPrice)) đ
+                    </strong>
+                </p>
+
+                <button type="submit" class="btn btn-danger btn-block">Đặt hàng</button>
+                @Html.ActionLink("Quay lại giỏ hàng", "Index", "Cart", null, new { @class = "btn btn-default btn-block" })
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#DeliveryMethod').change(function () { });
+        });
+    </script>
+}

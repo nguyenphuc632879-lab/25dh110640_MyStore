@@ -1,0 +1,60 @@
+@* Quản lý tài khoản Admin - tìm kiếm, sắp xếp, phân trang *@
+@model MyStore.Models.ViewModel.AdminUserSearchVM
+@{
+    ViewBag.Title = "Quản lý Tài khoản Admin";
+}
+
+<p>
+    @Html.ActionLink("+ Thêm mới tài khoản Admin", "Create", null, new { @class = "btn btn-danger" })
+</p>
+
+@using (Html.BeginForm("Index", "AdminUsers", FormMethod.Get))
+{
+    <div class="row" style="margin-bottom:12px;">
+        <div class="col-md-4">
+            @Html.TextBox("SearchTerm", Model.SearchTerm, new { @class = "form-control", placeholder = "Tìm theo tên đăng nhập..." })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("SortOrder", new SelectList(new[]
+            {
+                new SelectListItem { Text = "Tên A-Z", Value = "name" },
+                new SelectListItem { Text = "Tên Z-A", Value = "name_desc" }
+            }, "Value", "Text", Model.SortOrder), new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Tên đăng nhập</th>
+            <th>Mật khẩu</th>
+            <th>Quyền</th>
+            <th style="width:220px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AdminUsers)
+        {
+            <tr>
+                <td>@item.Username</td>
+                <td>@item.Password</td>
+                <td>@MyStore.Models.UserRoles.GetDisplayName(item.UserRole)</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.Username }, new { @class = "btn btn-info btn-sm" })
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.Username }, new { @class = "btn btn-warning btn-sm" })
+                    @Html.ActionLink("Xoá", "Delete", new { id = item.Username }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model.AdminUsers, page => Url.Action("Index", "AdminUsers",
+        new { page = page, SearchTerm = Model.SearchTerm, SortOrder = Model.SortOrder }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

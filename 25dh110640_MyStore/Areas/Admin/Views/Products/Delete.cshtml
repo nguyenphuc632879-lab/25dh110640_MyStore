@@ -1,0 +1,19 @@
+@* BE#3: Xoá sản phẩm *@
+@model MyStore.Models.Product
+@{
+    ViewBag.Title = "Xoá sản phẩm";
+}
+
+<div class="form-title">Xoá sản phẩm</div>
+<div class="form-box">
+    <h4>Bạn có chắc chắn muốn xoá sản phẩm này?</h4>
+
+    @Html.Partial("PVProductInfo", Model)
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger" onclick="return confirmDelete('Xoá sản phẩm này?')">Xoá</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

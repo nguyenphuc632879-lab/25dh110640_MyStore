@@ -1,0 +1,78 @@
+@* Trang Thông tin tài khoản: xem / cập nhật thông tin + đổi mật khẩu (BE#6-2.3) *@
+@model MyStore.Models.ViewModel.ProfileVM
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+
+<h3 class="section-title">Thông tin tài khoản</h3>
+
+<!-- ================= PHẦN THÔNG TIN CÁ NHÂN ================= -->
+<div class="form-title">Thông tin cá nhân</div>
+<div class="form-box">
+    <dl class="dl-horizontal">
+        <dt>Tên đăng nhập</dt>
+        <dd>@Model.Username</dd>
+        <dt>Họ tên</dt>
+        <dd>@Model.CustomerName</dd>
+        <dt>Số điện thoại</dt>
+        <dd>@Model.CustomerPhone</dd>
+        <dt>Email</dt>
+        <dd>@Model.CustomerEmail</dd>
+        <dt>Địa chỉ</dt>
+        <dd>@Model.CustomerAddress</dd>
+    </dl>
+</div>
+
+<!-- ================= PHẦN THAY ĐỔI THÔNG TIN ================= -->
+<div class="form-title">Thay đổi thông tin</div>
+<div class="form-box">
+    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Username)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerName)
+            @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerPhone)
+            @Html.TextBoxFor(m => m.CustomerPhone, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerEmail)
+            @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerAddress)
+            @Html.TextAreaFor(m => m.CustomerAddress, new { @class = "form-control", rows = 2 })
+        </div>
+        <button type="submit" class="btn btn-danger">Cập nhật thông tin</button>
+    }
+</div>
+
+<!-- ===================== ĐỔI MẬT KHẨU ===================== -->
+<div class="form-title">Đổi mật khẩu</div>
+<div class="form-box">
+    @using (Html.BeginForm("ChangePassword", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.OldPassword)
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.NewPassword)
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmNewPassword)
+            @Html.PasswordFor(m => m.ConfirmNewPassword, new { @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-warning">Đổi mật khẩu</button>
+    }
+</div>
+
+<p>@Html.ActionLink("← Quay về trang chủ", "Index", "Home")</p>

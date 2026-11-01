@@ -1,0 +1,32 @@
+@* BE#3: Partial View dùng chung cho Create và Edit sản phẩm *@
+@model MyStore.Models.Product
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+    @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProductDescription, htmlAttributes: new { @class = "control-label" })
+    @Html.TextAreaFor(model => model.ProductDescription, new { @class = "form-control", rows = 4 })
+    @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProductPrice, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.UploadImg, htmlAttributes: new { @class = "control-label" })
+    @Html.TextBoxFor(model => model.UploadImg, new { type = "file", @class = "form-control" })
+    @Html.HiddenFor(model => model.ProductImage)
+</div>

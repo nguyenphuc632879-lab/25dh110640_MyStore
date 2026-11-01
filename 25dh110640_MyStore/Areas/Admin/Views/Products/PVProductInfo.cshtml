@@ -1,0 +1,24 @@
+@* BE#3: Partial View thông tin sản phẩm - dùng chung cho Details và Delete *@
+@model MyStore.Models.Product
+
+<dl class="dl-horizontal">
+    <dt>Mã sản phẩm</dt>
+    <dd>@Html.DisplayFor(model => model.ProductID)</dd>
+
+    <dt>Tên sản phẩm</dt>
+    <dd>@Html.DisplayFor(model => model.ProductName)</dd>
+
+    <dt>Danh mục</dt>
+    <dd>@(Model.Category != null ? Model.Category.CategoryName : "")</dd>
+
+    <dt>Mô tả</dt>
+    <dd>@Html.DisplayFor(model => model.ProductDescription)</dd>
+
+    <dt>Giá</dt>
+    <dd>@String.Format("{0:#,##0}", Model.ProductPrice) đ</dd>
+
+    <dt>Hình ảnh</dt>
+    <dd>
+        <img src="@Url.Content(Model.ProductImage ?? "~/Content/images/default.png")" style="max-height:120px;" />
+    </dd>
+</dl>

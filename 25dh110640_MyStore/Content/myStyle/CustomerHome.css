@@ -1,0 +1,155 @@
+/* ============ CustomerHome.css - Style riêng trang Home (Customer) ============ */
+
+/* ------------------------------- Banner -------------------------------- */
+.home-banner {
+    background: url('../images/default.png') center/cover no-repeat, linear-gradient(135deg, #ff8a00, #e52e71);
+    height: 260px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+.home-banner .banner-content h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    text-shadow: 0 2px 4px rgba(0,0,0,.3);
+}
+
+.home-banner .banner-content p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.home-search {
+    background: #fff;
+    border-radius: 30px;
+    padding: 6px;
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.home-search input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 8px 15px;
+}
+
+.home-search button {
+    border-radius: 30px;
+    padding: 8px 25px;
+}
+
+/* --------------------------- Sản phẩm nổi bật --------------------------- */
+.featured-slider {
+    background: #fff;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 25px;
+}
+
+.featured-slider .slick-item {
+    padding: 5px;
+}
+
+.featured-item {
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    height: 280px;
+}
+
+.featured-item img {
+    height: 130px;
+    object-fit: contain;
+}
+
+/* ------------------------- Danh sách sản phẩm -------------------------- */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-grid .product-card {
+    width: calc(33.333% - 20px);
+    margin: 0 10px 20px;
+}
+
+@media (max-width: 991px) {
+    .product-grid .product-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 600px) {
+    .product-grid .product-card {
+        width: 100%;
+        margin: 0 0 15px;
+    }
+}
+
+/* ---------------------------- Nút thêm giỏ ----------------------------- */
+.btn-buy {
+    background: #ff6a00;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 6px 14px;
+}
+
+.btn-buy:hover {
+    background: #e55c00;
+    color: #fff;
+}
+
+/* --------------- Slider ngang (Sản phẩm nổi bật / tương tự) --------------- */
+.featured-slider {
+    position: relative;
+    padding: 15px 40px;
+}
+
+.featured-slider .slider-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.featured-slider .slider-track::-webkit-scrollbar {
+    display: none;
+}
+
+.featured-slider .featured-item {
+    flex: 0 0 calc(20% - 10px);
+    margin-right: 10px;
+    scroll-snap-align: start;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #ff3d00;
+    color: #fff;
+    font-size: 22px;
+    line-height: 28px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.slider-prev { left: 4px; }
+.slider-next { right: 4px; }
+
+@media (max-width: 768px) {
+    .featured-slider .featured-item { flex-basis: calc(50% - 10px); }
+}

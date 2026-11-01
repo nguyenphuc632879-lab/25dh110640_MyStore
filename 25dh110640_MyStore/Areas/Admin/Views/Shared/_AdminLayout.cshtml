@@ -1,0 +1,82 @@
+@* BE#2-1: Admin Layout - copy từ _Layout.cshtml và chỉnh sửa phần Header / Footer *@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Trang quản trị MyStore</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- ==================== SIDEBAR (MENU ADMIN) ==================== -->
+            <div class="col-md-2 admin-sidebar">
+                <h4 style="color:#ff6a00;text-align:center;padding-bottom:10px;border-bottom:1px solid #555;">
+                    MY STORE ADMIN
+                </h4>
+                <a href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                    <i class="fa fa-dashboard"></i> Trang chủ (Thống kê)
+                </a>
+                <a href="@Url.Action("Index", "Categories", new { area = "Admin" })">
+                    <i class="fa fa-list"></i> Quản lý Danh mục
+                </a>
+                <a href="@Url.Action("Index", "Products", new { area = "Admin" })">
+                    <i class="fa fa-cube"></i> Quản lý Sản phẩm
+                </a>
+                <a href="@Url.Action("Index", "Customers", new { area = "Admin" })">
+                    <i class="fa fa-users"></i> Quản lý Khách hàng
+                </a>
+                <a href="@Url.Action("Index", "Orders", new { area = "Admin" })">
+                    <i class="fa fa-shopping-bag"></i> Quản lý Đơn hàng
+                </a>
+                <a href="@Url.Action("Index", "AdminUsers", new { area = "Admin" })">
+                    <i class="fa fa-user-secret"></i> Quản lý Tài khoản Admin
+                </a>
+                <hr style="border-color:#555;" />
+                <a href="@Url.Action("Index", "Home", new { area = "" })">
+                    <i class="fa fa-home"></i> Về trang khách hàng
+                </a>
+            </div>
+
+            <!-- ==================== NỘI DUNG CHÍNH ==================== -->
+            <div class="col-md-10" style="padding:0;">
+                <div class="admin-topbar">
+                    <span class="pull-right">
+                        <i class="fa fa-user-circle"></i>
+                        Xin chào <strong>@(User != null && User.Identity != null ? User.Identity.Name : "")</strong>
+                        &nbsp;|&nbsp;
+                        <a href="@Url.Action("Logout", "Account", new { area = "Admin" })">
+                            <i class="fa fa-sign-out"></i> Đăng xuất
+                        </a>
+                    </span>
+                    <h4 style="margin:0;">@ViewBag.Title</h4>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div style="padding:20px;">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Message"]</div>
+                    }
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

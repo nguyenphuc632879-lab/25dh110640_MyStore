@@ -1,0 +1,46 @@
+@* BE#5: Danh sách đơn hàng của 1 khách hàng cụ thể *@
+@model PagedList.IPagedList<MyStore.Models.Order>
+@{
+    ViewBag.Title = "Đơn hàng của khách hàng";
+    var customer = ViewBag.Customer as MyStore.Models.Customer;
+}
+
+<h4>
+    Khách hàng: <strong>@(customer != null ? customer.CustomerName : "")</strong>
+    (@(customer != null ? customer.Username : ""))
+</h4>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Địa chỉ giao</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.OrderID</td>
+                <td>@String.Format("{0:dd/MM/yyyy}", o.OrderDate)</td>
+                <td>@String.Format("{0:#,##0}", o.TotalAmount) đ</td>
+                <td>@o.ShippingAddress</td>
+                <td>@o.PaymentStatus</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "OrderDetails", new { id = o.OrderID }, new { @class = "btn btn-info btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Orders", "Customers", new { id = customer != null ? customer.CustomerID : 0, page = page }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+<p>@Html.ActionLink("← Quay lại danh sách khách hàng", "Index")</p>

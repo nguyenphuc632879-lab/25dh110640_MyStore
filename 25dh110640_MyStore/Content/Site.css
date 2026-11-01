@@ -1,0 +1,217 @@
+/* ======================= Site.css - Style dùng chung ======================= */
+
+body {
+    padding-top: 0;
+    padding-bottom: 20px;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* ---------------------------- Header / Menu ---------------------------- */
+.site-header {
+    background: #fff;
+    border-bottom: 2px solid #ff6a00;
+}
+
+.site-banner {
+    background: linear-gradient(90deg, #ff6a00, #ff3d00);
+    color: #fff;
+    padding: 18px 0;
+    text-align: center;
+}
+
+.site-banner h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+.main-menu {
+    background: #222;
+}
+
+.main-menu .nav > li > a {
+    color: #fff;
+    padding: 12px 18px;
+}
+
+.main-menu .nav > li > a:hover,
+.main-menu .nav > li > a:focus {
+    background: #ff6a00;
+    color: #fff;
+}
+
+.dropdown-menu > li > a:hover {
+    background: #ff6a00;
+    color: #fff;
+}
+
+.cart-badge {
+    background: #ff3d00;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+/* ------------------------------- Footer ------------------------------- */
+.site-footer {
+    background: #222;
+    color: #ddd;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+.site-footer a {
+    color: #ffb59b;
+}
+
+/* ------------------------------ Sản phẩm ------------------------------ */
+.product-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: box-shadow .2s;
+    height: 320px;
+}
+
+.product-card:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+}
+
+.product-card img {
+    max-height: 140px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.product-name {
+    font-size: 15px;
+    font-weight: 600;
+    height: 40px;
+    overflow: hidden;
+    color: #333;
+}
+
+.product-price {
+    color: #ff3d00;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.price-old {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 13px;
+}
+
+/* ---------------------------- Section title ---------------------------- */
+.section-title {
+    border-left: 5px solid #ff6a00;
+    padding-left: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 25px 0 15px;
+}
+
+/* ------------------------------ Bảng Admin ------------------------------ */
+.table thead th {
+    background: #343a40;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fff7f0;
+}
+
+/* ------------------------------- Form ---------------------------------- */
+.form-title {
+    background: #ff6a00;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px 4px 0 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.field-validation-error {
+    color: #d9534f;
+    font-size: 13px;
+}
+
+.validation-summary-errors ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+/* ------------------------------ Phân trang ------------------------------ */
+.pagination-container {
+    text-align: center;
+}
+
+.pagination > .active > a {
+    background-color: #ff6a00;
+    border-color: #ff6a00;
+}
+
+/* -------------------------------- Admin -------------------------------- */
+.admin-sidebar {
+    background: #343a40;
+    min-height: 100vh;
+    padding-top: 20px;
+}
+
+.admin-sidebar a {
+    color: #ccc;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+    background: #ff6a00;
+    color: #fff;
+}
+
+.admin-topbar {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 20px;
+}
+
+.stat-box {
+    background: #fff;
+    border-left: 5px solid #ff6a00;
+    border-radius: 4px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+.stat-box h3 {
+    margin: 0;
+    font-size: 26px;
+    color: #ff3d00;
+}
+
+.chart-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,31 @@
+@* Cập nhật tài khoản Admin *@
+@model MyStore.Models.User
+@{
+    ViewBag.Title = "Cập nhật tài khoản Admin";
+}
+
+<div class="form-title">Cập nhật tài khoản Admin</div>
+<div class="form-box">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @* Username là khoá chính -> giữ nguyên, chỉ đổi mật khẩu *@
+        @Html.HiddenFor(m => m.Username)
+        @Html.HiddenFor(m => m.UserRole)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-danger">Lưu thay đổi</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

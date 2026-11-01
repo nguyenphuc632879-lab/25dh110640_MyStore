@@ -1,0 +1,42 @@
+@* Partial View: Menu cá nhân trên Header (BE#8 - PersonalMenu) *@
+@model MyStore.Models.ViewModel.PersonalMenuVM
+@{
+    Layout = null;
+}
+
+<!-- Thành phần: Tài khoản -->
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+        <i class="fa fa-user"></i>
+        @if (Model.IsLoggedIn)
+        {
+            <span>Hello, @Model.Username</span>
+        }
+        else
+        {
+            <span>Tài khoản</span>
+        }
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        @if (Model.IsLoggedIn)
+        {
+            <li>@Html.ActionLink("Thông tin tài khoản", "ProfileInfo", "Account")</li>
+            <li>@Html.ActionLink("Lịch sử mua hàng", "MyOrder", "Order")</li>
+            <li>@Html.ActionLink("Đăng xuất", "Logout", "Account")</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink("Đăng ký", "Register", "Account")</li>
+            <li>@Html.ActionLink("Đăng nhập", "Login", "Account")</li>
+        }
+    </ul>
+</li>
+
+<!-- Thành phần: Giỏ hàng -->
+<li>
+    <a href="@Url.Action("Index", "Cart")">
+        <i class="fa fa-shopping-cart"></i> Giỏ hàng
+        <span class="cart-badge">@Model.CartCount</span>
+    </a>
+</li>

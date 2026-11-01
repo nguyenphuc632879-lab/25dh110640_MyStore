@@ -1,0 +1,66 @@
+@* Quản lý đơn hàng *@
+@model PagedList.IPagedList<MyStore.Models.Order>
+@{
+    ViewBag.Title = "Quản lý Đơn hàng";
+    var statusList = ViewBag.StatusList as string[] ?? new string[0];
+}
+
+@using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+{
+    <div class="row" style="margin-bottom:12px;">
+        <div class="col-md-4">
+            <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" placeholder="Tìm theo mã đơn hoặc tên khách hàng..." />
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownList("status", new SelectList(statusList, ViewBag.Status), new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Địa chỉ giao</th>
+            <th>Trạng thái</th>
+            <th style="width:180px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderID</td>
+                <td>@(item.Customer != null ? item.Customer.CustomerName : "")</td>
+                <td>@String.Format("{0:dd/MM/yyyy}", item.OrderDate)</td>
+                <td>@String.Format("{0:#,##0}", item.TotalAmount) đ</td>
+                <td>@item.ShippingAddress</td>
+                <td>@item.PaymentStatus</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.OrderID }, new { @class = "btn btn-info btn-sm" })
+                    @using (Html.BeginForm("Delete", "Orders", new { id = item.OrderID }, FormMethod.Post, new { style = "display:inline-block;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete('Xoá đơn hàng này?')">Xoá</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Không có đơn hàng nào.</div>
+}
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Orders", new { page = page, searchTerm = ViewBag.SearchTerm, status = ViewBag.Status }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>

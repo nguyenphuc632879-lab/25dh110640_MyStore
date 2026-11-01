@@ -1,0 +1,40 @@
+@* BE#4: Quản lý sản phẩm - Tìm kiếm, Sắp xếp, Phân trang *@
+@model MyStore.Models.ViewModel.ProductSearchVM
+@{
+    ViewBag.Title = "Quản lý Sản phẩm";
+}
+
+<p>
+    @Html.ActionLink("+ Thêm mới sản phẩm", "Create", null, new { @class = "btn btn-danger" })
+</p>
+
+<!-- ============ PHẦN TIÊU CHÍ TÌM KIẾM / SẮP XẾP ============ -->
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <div class="row" style="margin-bottom:12px;">
+        <div class="col-md-3">
+            @Html.TextBox("SearchTerm", Model.SearchTerm, new { @class = "form-control", placeholder = "Từ khoá (tên, mô tả, danh mục)..." })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("MinPrice", Model.MinPrice, new { @class = "form-control", placeholder = "Giá từ", type = "number" })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("MaxPrice", Model.MaxPrice, new { @class = "form-control", placeholder = "Giá đến", type = "number" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("SortOrder", new SelectList(new[]
+            {
+                new SelectListItem { Text = "Tên A-Z",        Value = "name" },
+                new SelectListItem { Text = "Tên Z-A",        Value = "name_desc" },
+                new SelectListItem { Text = "Giá tăng dần",   Value = "price" },
+                new SelectListItem { Text = "Giá giảm dần",   Value = "price_desc" }
+            }, "Value", "Text", Model.SortOrder), new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<!-- ============ PHẦN KẾT QUẢ (PARTIAL VIEW) ============ -->
+@Html.Partial("PVListProduct", Model)

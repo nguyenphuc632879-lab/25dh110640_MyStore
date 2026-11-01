@@ -1,0 +1,114 @@
+@* Trang Giỏ hàng (BE#7): hiển thị các mặt hàng, gom nhóm theo danh mục (nâng cao) *@
+@model MyStore.Models.ViewModel.Cart
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<h3 class="section-title">Giỏ hàng của bạn (@Model.Count sản phẩm)</h3>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        Giỏ hàng đang trống. @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home")
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <!-- ============ PHẦN CHI TIẾT GIỎ HÀNG (gom nhóm theo danh mục) ============ -->
+            @foreach (var group in Model.GroupedItems)
+            {
+                <h4 style="background:#eee;padding:8px 12px;border-radius:4px;">
+                    <i class="fa fa-tags"></i> @group.Key
+                </h4>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;"><input type="checkbox" checked onchange="toggleAll(this)" /></th>
+                            <th>Sản phẩm</th>
+                            <th style="width:120px;">Đơn giá</th>
+                            <th style="width:140px;">Số lượng</th>
+                            <th style="width:120px;">Thành tiền</th>
+                            <th style="width:80px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in group)
+                        {
+                            <tr>
+                                <td><input type="checkbox" class="item-check" value="@item.ProductID" data-total="@item.TotalPrice.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" data-qty="@item.Quantity" checked onchange="updateCartSelection()" /></td>
+                                <td>
+                                    <img src="@Url.Content(item.ProductImage ?? "~/Content/images/default.png")" style="width:50px;height:50px;object-fit:contain;" />
+                                    @Html.ActionLink(item.ProductName, "ProductDetail", "Home", new { id = item.ProductID }, null)
+                                </td>
+                                <td>@String.Format("{0:#,##0}", item.ProductPrice) đ</td>
+                                <td>
+                                    @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post, new { @class = "form-inline" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductID" />
+                                        <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control input-sm" style="width:70px;display:inline-block;" />
+                                        <button type="submit" class="btn btn-default btn-sm">Cập nhật</button>
+                                    }
+                                </td>
+                                <td class="text-danger"><strong>@String.Format("{0:#,##0}", item.TotalPrice) đ</strong></td>
+                                <td>
+                                    @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductID" />
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete('Xoá sản phẩm này khỏi giỏ hàng?')">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            <div class="pull-left">
+                @using (Html.BeginForm("ClearCart", "Cart", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-default" onclick="return confirmDelete('Xoá toàn bộ giỏ hàng?')">
+                        <i class="fa fa-trash-o"></i> Xoá giỏ hàng
+                    </button>
+                }
+            </div>
+            <div class="pull-right">
+                @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+        <!-- ==================== PHẦN TÍNH TIỀN ==================== -->
+        <div class="col-md-4">
+            <div class="form-title">Tính tiền</div>
+            <div class="form-box">
+                <p>Số mặt hàng đã chọn: <strong id="selectedCount">@Model.Count</strong></p>
+                <p>Tổng tiền: <strong class="text-danger" style="font-size:20px;" id="selectedTotal">@String.Format("{0:#,##0}", Model.Total) đ</strong></p>
+                <hr />
+                @* Chỉ thanh toán các sản phẩm đã tick chọn: JS gắn selectedIds vào form trước khi gửi *@
+                <form id="buyForm" method="get" action="@Url.Action("Checkout", "Order")" onsubmit="return prepareBuyForm()">
+                    <div id="buyIds"></div>
+                    <button type="submit" class="btn btn-danger btn-block">Mua hàng</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ PHẦN SẢN PHẨM TƯƠNG TỰ (nâng cao) ============ -->
+    if (Model.SimilarProducts != null && Model.SimilarProducts.Any())
+    {
+        <h3 class="section-title">Sản phẩm tương tự</h3>
+        @Html.Partial("_PVSimilarProduct", Model)
+    }
+}
+
+@section scripts {
+    <script>
+        $(function () { updateCartSelection(); });
+    </script>
+}
