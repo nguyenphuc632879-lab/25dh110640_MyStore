@@ -4,15 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyStore.Models
 {
-    /// <summary>
-    /// Lớp ánh xạ bảng [Customer] theo đúng file database2024.sql:
-    ///     CustomerID      INT IDENTITY(1,1)  - khoá chính
-    ///     CustomerName    NVARCHAR(MAX) NOT NULL
-    ///     CustomerPhone   NVARCHAR(15)  NOT NULL
-    ///     CustomerEmail   NVARCHAR(MAX) NULL
-    ///     CustomerAddress NVARCHAR(MAX) NULL
-    ///     Username        NVARCHAR(255) NOT NULL - FK -> User.Username
-    /// </summary>
     [Table("Customer")]
     public partial class Customer
     {
