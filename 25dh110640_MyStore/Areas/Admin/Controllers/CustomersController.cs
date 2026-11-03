@@ -7,13 +7,10 @@ using PagedList;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// BE#5 - Quản lý tài khoản khách hàng và đơn hàng
-    /// Xem, tìm kiếm, sắp xếp, phân trang tài khoản
-    /// </summary>
+   
     public class CustomersController : AdminBaseController
     {
-        // GET: Admin/Customers
+      
         public ActionResult Index(CustomerSearchVM model, int? page)
         {
             var customers = db.Customers.Include(c => c.User).AsQueryable();
@@ -46,7 +43,6 @@ namespace MyStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/Customers/Details/5
         public ActionResult Details(int id)
         {
             var customer = db.Customers.Include(c => c.User).FirstOrDefault(c => c.CustomerID == id);
@@ -58,7 +54,7 @@ namespace MyStore.Areas.Admin.Controllers
             return View(customer);
         }
 
-        // GET: Admin/Customers/Orders/5 - danh sách đơn hàng của 1 khách hàng
+       
         public ActionResult Orders(int id, int? page)
         {
             var customer = db.Customers.Find(id);
@@ -73,7 +69,7 @@ namespace MyStore.Areas.Admin.Controllers
             return View(orders);
         }
 
-        // GET: Admin/Customers/OrderDetails/5 - chi tiết 1 đơn hàng
+        
         public ActionResult OrderDetails(int id)
         {
             var order = db.Orders.Include("OrderDetails.Product")
@@ -84,7 +80,7 @@ namespace MyStore.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Admin/Customers/Delete/5
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
@@ -98,7 +94,7 @@ namespace MyStore.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Xoá cả tài khoản đăng nhập tương ứng
+        
             var user = db.Users.FirstOrDefault(u => u.Username == customer.Username);
             db.Customers.Remove(customer);
             if (user != null) db.Users.Remove(user);
