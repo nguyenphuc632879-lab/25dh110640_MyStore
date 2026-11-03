@@ -5,12 +5,6 @@ using MyStore.Models;
 
 namespace MyStore.Filters
 {
-    /// <summary>
-    /// Filter dùng chung cho cả 2 phần: kiểm tra đã đăng nhập chưa,
-    /// và (tuỳ chọn) kiểm tra có đúng role hay không.
-    /// Cách dùng: [AuthorizeRole(UserRoles.Admin)] hoặc [AuthorizeRole(UserRoles.Customer)]
-    /// (UserRoles.Admin = "A", UserRoles.Customer = "C" theo cột User.UserRole NCHAR(1))
-    /// </summary>
     public class AuthorizeRoleAttribute : AuthorizeAttribute
     {
         private readonly string _role;
@@ -30,7 +24,7 @@ namespace MyStore.Filters
             if (string.IsNullOrEmpty(_role))
                 return true;
 
-            // Role được lưu trong FormsAuthenticationTicket.UserData khi đăng nhập
+       
             var authCookie = httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie == null) return false;
 
@@ -47,7 +41,7 @@ namespace MyStore.Filters
 
             if (filterContext.Result is HttpUnauthorizedResult)
             {
-                // Chuyển về trang Login tương ứng
+                
                 filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary
                 {
                     { "area", _role == UserRoles.Admin ? "Admin" : "" },
