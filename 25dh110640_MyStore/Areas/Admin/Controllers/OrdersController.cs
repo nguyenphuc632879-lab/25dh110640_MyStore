@@ -7,12 +7,9 @@ using PagedList;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Quản lý đơn hàng: xem danh sách, chi tiết, cập nhật trạng thái
-    /// </summary>
     public class OrdersController : AdminBaseController
     {
-        // GET: Admin/Orders
+    
         public ActionResult Index(string searchTerm, string status, int? page)
         {
             var orders = db.Orders.Include(o => o.Customer).AsQueryable();
@@ -36,8 +33,6 @@ namespace MyStore.Areas.Admin.Controllers
             var model = orders.OrderByDescending(o => o.OrderDate).ToPagedList(page ?? 1, 10);
             return View(model);
         }
-
-        // GET: Admin/Orders/Details/5
         public ActionResult Details(int id)
         {
             var order = db.Orders.Include("OrderDetails.Product")
@@ -47,8 +42,6 @@ namespace MyStore.Areas.Admin.Controllers
 
             return View(order);
         }
-
-        // POST: Admin/Orders/UpdateStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateStatus(int orderId, string status)
@@ -62,8 +55,6 @@ namespace MyStore.Areas.Admin.Controllers
 
             return RedirectToAction("Details", new { id = orderId });
         }
-
-        // POST: Admin/Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
