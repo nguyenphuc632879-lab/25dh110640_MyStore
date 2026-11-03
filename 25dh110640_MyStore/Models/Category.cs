@@ -5,9 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyStore.Models
 {
-    /// <summary>
-    /// Lớp ánh xạ bảng Category (DB First - bảng đã tạo trong CSDL MyStore)
-    /// </summary>
     [Table("Category")]
     public partial class Category
     {
@@ -27,7 +24,6 @@ namespace MyStore.Models
         [Display(Name = "Tên danh mục")]
         public string CategoryName { get; set; }
 
-        // Quan hệ 1 - n với Product
         public virtual ICollection<Product> Products { get; set; }
     }
 }
