@@ -4,9 +4,6 @@ using PagedList;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// ViewModel tìm kiếm / sắp xếp / phân trang danh sách khách hàng (phần Admin - BE#5)
-    /// </summary>
     public class CustomerSearchVM
     {
         public string SearchTerm { get; set; }
