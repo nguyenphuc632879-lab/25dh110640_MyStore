@@ -1,6 +1,4 @@
-/* ============ CustomerHome.css - Style riêng trang Home (Customer) ============ */
 
-/* ------------------------------- Banner -------------------------------- */
 .home-banner {
     background: url('../images/default.png') center/cover no-repeat, linear-gradient(135deg, #ff8a00, #e52e71);
     height: 260px;
@@ -45,7 +43,6 @@
     padding: 8px 25px;
 }
 
-/* --------------------------- Sản phẩm nổi bật --------------------------- */
 .featured-slider {
     background: #fff;
     border-radius: 6px;
@@ -69,8 +66,6 @@
     height: 130px;
     object-fit: contain;
 }
-
-/* ------------------------- Danh sách sản phẩm -------------------------- */
 .product-grid {
     display: flex;
     flex-wrap: wrap;
@@ -94,7 +89,6 @@
     }
 }
 
-/* ---------------------------- Nút thêm giỏ ----------------------------- */
 .btn-buy {
     background: #ff6a00;
     border: none;
@@ -108,7 +102,6 @@
     color: #fff;
 }
 
-/* --------------- Slider ngang (Sản phẩm nổi bật / tương tự) --------------- */
 .featured-slider {
     position: relative;
     padding: 15px 40px;
