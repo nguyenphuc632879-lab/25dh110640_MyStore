@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// ViewModel trang Đăng nhập (BE#6)
-    /// </summary>
     public class LoginVM
     {
         [Required(ErrorMessage = "Tên đăng nhập không được để trống")]
