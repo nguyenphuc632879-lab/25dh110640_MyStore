@@ -1,4 +1,4 @@
-@* BE#5: Chi tiết khách hàng + danh sách đơn hàng của khách hàng đó *@
+
 @model MyStore.Models.Customer
 @{
     ViewBag.Title = "Chi tiết khách hàng";
@@ -24,8 +24,6 @@
         <dd>@MyStore.Models.UserRoles.GetDisplayName(Model.User != null ? Model.User.UserRole : "")</dd>
     </dl>
 </div>
-
-<!-- ============ DANH SÁCH ĐƠN HÀNG CỦA KHÁCH HÀNG NÀY ============ -->
 <div class="form-title">Danh sách đơn hàng</div>
 <div class="form-box">
     <table class="table table-bordered table-hover">
