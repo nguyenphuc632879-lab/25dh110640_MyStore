@@ -1,4 +1,4 @@
-## Ignore Visual Studio / ASP.NET build output
+
 [Bb]in/
 [Oo]bj/
 [Dd]ebug/
@@ -16,7 +16,6 @@ bld/
 *.sln.docstates
 *.userprefs
 
-## NuGet
 packages/
 *.nupkg
 *.nuget.props
@@ -24,7 +23,6 @@ packages/
 project.lock.json
 project.fragment.lock.json
 
-## Visual Studio cache / options
 .vs/
 .vscode/
 _ReSharper*/
@@ -36,7 +34,6 @@ _ReSharper*/
 *.vspscc
 *.vssscc
 
-## Publish / deploy
 publish/
 PublishScripts/
 *.publishsettings
@@ -44,6 +41,5 @@ PublishScripts/
 *.pubxml.user
 App_Data/
 
-## OS files
 .DS_Store
 Thumbs.db
