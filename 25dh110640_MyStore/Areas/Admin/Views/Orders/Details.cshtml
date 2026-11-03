@@ -1,10 +1,9 @@
-@* Chi tiết đơn hàng + cập nhật trạng thái *@
+
 @model MyStore.Models.Order
 @{
     ViewBag.Title = "Chi tiết đơn hàng #" + Model.OrderID;
     var statuses = new[] { "Chờ thanh toán", "Đang xử lý", "Đang vận chuyển", "Đã giao", "Đã huỷ" };
 }
-
 <div class="form-title">Đơn hàng #@Model.OrderID</div>
 <div class="form-box">
     <dl class="dl-horizontal">
@@ -19,8 +18,6 @@
         <dt>Giao hàng</dt>
         <dd>@(Model.DeliveryMethod ?? "—")</dd>
     </dl>
-
-    <!-- ============ CẬP NHẬT TRẠNG THÁI ============ -->
     @using (Html.BeginForm("UpdateStatus", "Orders", FormMethod.Post, new { @class = "form-inline" }))
     {
         @Html.AntiForgeryToken()
@@ -34,9 +31,6 @@
         </select>
         <button type="submit" class="btn btn-danger">Cập nhật</button>
     }
-
-    <hr />
-
     <table class="table table-bordered">
         <thead>
             <tr>
