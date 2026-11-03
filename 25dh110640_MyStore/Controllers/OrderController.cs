@@ -15,18 +15,12 @@ namespace MyStore.Controllers
         {
             return new CartService(Session);
         }
-
-        #region Hàm dùng chung
-
-        /// <summary>Khách hàng đang đăng nhập (null nếu chưa có)</summary>
         private Customer GetCurrentCustomer()
         {
             var user = db.Users.SingleOrDefault(u => u.Username == User.Identity.Name);
             if (user == null) return null;
             return db.Customers.SingleOrDefault(c => c.Username == user.Username);
         }
-
-        /// <summary>Lọc các mặt hàng được chọn mua; không chọn gì thì lấy toàn bộ giỏ</summary>
         private static System.Collections.Generic.List<CartItem> GetSelectedItems(Cart cart, System.Collections.Generic.ICollection<int> selectedIds)
         {
             var items = cart.Items.ToList();
@@ -34,11 +28,6 @@ namespace MyStore.Controllers
                 items = items.Where(i => selectedIds.Contains(i.ProductID)).ToList();
             return items;
         }
-
-        #endregion
-
-        #region 4.1 Trang Đặt hàng (Checkout)
-
         [Authorize]
         [HttpGet]
         public ActionResult Checkout(int[] selectedIds)
@@ -63,7 +52,7 @@ namespace MyStore.Controllers
 
             var model = new CheckoutVM
             {
-                ShippingAddress = customer.CustomerAddress,   // mặc định lấy địa chỉ đã lưu
+                ShippingAddress = customer.CustomerAddress,   
                 CustomerName = customer.CustomerName,
                 CustomerPhone = customer.CustomerPhone,
                 CartItems = items,
@@ -113,8 +102,6 @@ namespace MyStore.Controllers
                 Session["PendingOrder"] = model;
                 return RedirectToAction("PaymentWithPaypal", "Paypal");
             }
-
-            // Tạo đơn hàng + chi tiết đơn hàng
             var order = new Order
             {
                 CustomerID = customer.CustomerID,
@@ -145,11 +132,6 @@ namespace MyStore.Controllers
 
             return RedirectToAction("OrderSuccess", new { id = order.OrderID });
         }
-
-        #endregion
-
-        #region 4.2 Xác nhận đơn hàng
-
         [Authorize]
         public ActionResult OrderSuccess(int id)
         {
@@ -165,11 +147,6 @@ namespace MyStore.Controllers
 
             return View(order);
         }
-
-        #endregion
-
-        #region 4.3 Đơn hàng của tôi (Lịch sử mua hàng)
-
         [Authorize]
         public ActionResult MyOrder(string searchTerm, string status, int? page)
         {
@@ -179,8 +156,6 @@ namespace MyStore.Controllers
             var orders = db.Orders.Include("OrderDetails.Product")
                                   .Where(o => o.CustomerID == customer.CustomerID)
                                   .AsQueryable();
-
-            // Tìm theo mã đơn hàng hoặc tên sản phẩm
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 int orderId;
@@ -190,7 +165,7 @@ namespace MyStore.Controllers
                     o.OrderDetails.Any(d => d.Product.ProductName.Contains(searchTerm)));
             }
 
-            // Lọc theo trạng thái
+           
             if (!string.IsNullOrEmpty(status) && status != "Tất cả")
                 orders = orders.Where(o => o.PaymentStatus == status);
 
@@ -245,10 +220,6 @@ namespace MyStore.Controllers
 
             return RedirectToAction("MyOrder");
         }
-
-        /// <summary>
-        /// Mua lại: đưa các sản phẩm của đơn hàng cũ vào giỏ hàng
-        /// </summary>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -279,7 +250,5 @@ namespace MyStore.Controllers
 
             return RedirectToAction("Index", "Cart");
         }
-
-        #endregion
     }
 }
