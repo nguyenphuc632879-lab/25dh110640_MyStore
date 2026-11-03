@@ -10,22 +10,13 @@ namespace MyStore.Controllers
 {
     public class CartController : BaseController
     {
-        /// <summary>
-        /// Lấy dịch vụ giỏ hàng (thao tác với Session)
-        /// </summary>
         public CartService GetCartService()
         {
             return new CartService(Session);
         }
-
-        /// <summary>
-        /// Trang giỏ hàng: hiển thị các mặt hàng, gom nhóm theo danh mục (nâng cao)
-        /// </summary>
         public ActionResult Index(int? page)
         {
             var cart = GetCartService().GetCart();
-
-            // Giỏ hàng nâng cao: hiển thị thêm danh sách sản phẩm cùng danh mục với sản phẩm trong giỏ
             var categories = cart.Items.Select(i => i.Category).Distinct().ToList();
             if (categories.Count > 0)
             {
@@ -37,10 +28,6 @@ namespace MyStore.Controllers
 
             return View(cart);
         }
-
-        /// <summary>
-        /// Thêm sản phẩm vào giỏ hàng
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddToCart(int productId, int quantity = 1)
@@ -65,10 +52,6 @@ namespace MyStore.Controllers
 
             return RedirectToAction("Index");
         }
-
-        /// <summary>
-        /// Xoá 1 sản phẩm khỏi giỏ hàng
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RemoveFromCart(int productId)
@@ -79,10 +62,6 @@ namespace MyStore.Controllers
 
             return RedirectToAction("Index");
         }
-
-        /// <summary>
-        /// Cập nhật số lượng của 1 sản phẩm trong giỏ
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateQuantity(int productId, int quantity)
@@ -94,9 +73,6 @@ namespace MyStore.Controllers
             return RedirectToAction("Index");
         }
 
-        /// <summary>
-        /// Xoá toàn bộ giỏ hàng
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ClearCart()
@@ -104,10 +80,6 @@ namespace MyStore.Controllers
             GetCartService().ClearCart();
             return RedirectToAction("Index");
         }
-
-        /// <summary>
-        /// Partial view: số lượng mặt hàng trong giỏ (hiển thị trên menu)
-        /// </summary>
         [ChildActionOnly]
         public ActionResult CartSummary()
         {
