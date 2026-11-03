@@ -1,5 +1,4 @@
 using System.Web.Mvc;
-
 namespace MyStore.Areas.Admin
 {
     public class AdminAreaRegistration : AreaRegistration
