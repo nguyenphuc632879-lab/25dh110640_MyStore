@@ -1,10 +1,9 @@
-@* Quản lý đơn hàng *@
+
 @model PagedList.IPagedList<MyStore.Models.Order>
 @{
     ViewBag.Title = "Quản lý Đơn hàng";
     var statusList = ViewBag.StatusList as string[] ?? new string[0];
 }
-
 @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
 {
     <div class="row" style="margin-bottom:12px;">
