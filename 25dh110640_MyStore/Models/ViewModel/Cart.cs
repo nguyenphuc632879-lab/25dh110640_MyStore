@@ -6,9 +6,6 @@ using PagedList;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// Lớp quản lý danh sách sản phẩm trong giỏ hàng (lưu trong Session)
-    /// </summary>
     public class Cart
     {
         private List<CartItem> items = new List<CartItem>();
@@ -24,7 +21,6 @@ namespace MyStore.Models.ViewModel
             get { return items.GroupBy(i => i.Category).ToList(); }
         }
 
-        // Giỏ hàng nâng cao: các sản phẩm cùng danh mục với sản phẩm trong giỏ
         public IPagedList<Product> SimilarProducts { get; set; }
 
         public int Count
@@ -63,7 +59,7 @@ namespace MyStore.Models.ViewModel
             }
         }
 
-        // Xoá các mặt hàng đã đặt mua (khi chỉ thanh toán một phần giỏ hàng)
+
         public void RemoveItems(IEnumerable<int> productIds)
         {
             items.RemoveAll(i => productIds.Contains(i.ProductID));
