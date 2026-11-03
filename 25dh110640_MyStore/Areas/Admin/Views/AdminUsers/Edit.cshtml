@@ -1,4 +1,4 @@
-@* Cập nhật tài khoản Admin *@
+
 @model MyStore.Models.User
 @{
     ViewBag.Title = "Cập nhật tài khoản Admin";
@@ -11,7 +11,7 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @* Username là khoá chính -> giữ nguyên, chỉ đổi mật khẩu *@
+       
         @Html.HiddenFor(m => m.Username)
         @Html.HiddenFor(m => m.UserRole)
 
