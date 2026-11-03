@@ -5,18 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyStore.Models
 {
-    /// <summary>
-    /// Lớp ánh xạ bảng [Order] theo đúng file database2024.sql:
-    ///     OrderID         INT IDENTITY(1,1)  - khoá chính
-    ///     CustomerID      INT            NOT NULL - FK -> Customer
-    ///     OrderDate       DATE           NOT NULL
-    ///     TotalAmount     DECIMAL(18,2) NOT NULL
-    ///     PaymentStatus   NVARCHAR(MAX) NULL
-    ///     ShippingAddress NVARCHAR(MAX) NOT NULL
-    ///
-    /// Trạng thái đơn hàng được lưu trong PaymentStatus:
-    ///     "Chờ thanh toán" | "Đang xử lý" | "Đang vận chuyển" | "Đã giao" | "Đã huỷ"
-    /// </summary>
     [Table("Order")]
     public partial class Order
     {
@@ -44,7 +32,7 @@ namespace MyStore.Models
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
         public decimal TotalAmount { get; set; }
 
-        // Chờ thanh toán | Đang xử lý | Đang vận chuyển | Đã giao | Đã huỷ
+
         [Display(Name = "Trạng thái đơn hàng")]
         public string PaymentStatus { get; set; }
 
