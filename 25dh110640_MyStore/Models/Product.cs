@@ -4,21 +4,12 @@ using System.Web;
 
 namespace MyStore.Models
 {
-    /// <summary>
-    /// Lớp ánh xạ bảng [Product] theo đúng file database2024.sql:
-    ///     ProductID          INT IDENTITY(1,1)   - khoá chính
-    ///     CategoryID         INT            NOT NULL - FK -> Category
-    ///     ProductName        NVARCHAR(MAX)  NOT NULL
-    ///     ProductDecription  NVARCHAR(MAX)  NOT NULL  (tên cột trong DB viết đúng như file SQL)
-    ///     ProductPrice       DECIMAL(18,2)  NOT NULL
-    ///     ProductImage       NVARCHAR(MAX)  NULL
-    /// </summary>
     [Table("Product")]
     public partial class Product
     {
         public Product()
         {
-            // Ảnh mặc định nếu không có ảnh
+
             ProductImage = "~/Content/images/default.png";
         }
 
@@ -35,7 +26,7 @@ namespace MyStore.Models
         [Display(Name = "Tên sản phẩm")]
         public string ProductName { get; set; }
 
-        // DB đặt tên cột là ProductDecription (theo file database2024.sql)
+
         [Required(ErrorMessage = "Mô tả sản phẩm không được để trống")]
         [Column("ProductDecription")]
         [Display(Name = "Mô tả")]
@@ -51,12 +42,12 @@ namespace MyStore.Models
         [Display(Name = "Hình ảnh")]
         public string ProductImage { get; set; }
 
-        // Thuộc tính phục vụ upload ảnh: không lưu vào DB
+    
         [NotMapped]
         [Display(Name = "Chọn ảnh")]
         public HttpPostedFileBase UploadImg { get; set; }
 
-        // Quan hệ n - 1 với Category
+    
         [ForeignKey("CategoryID")]
         public virtual Category Category { get; set; }
     }
