@@ -4,13 +4,8 @@ using System.Web.Mvc;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// ViewModel trang Đăng ký tài khoản khách hàng (BE#6)
-    /// Kết hợp dữ liệu của 2 bảng User + Customer
-    /// </summary>
     public class RegisterVM
     {
-        /* ---------- Thông tin tài khoản (bảng User) ---------- */
         [Required(ErrorMessage = "Tên đăng nhập không được để trống")]
         [StringLength(50, ErrorMessage = "Tên đăng nhập tối đa 50 ký tự")]
         [Display(Name = "Tên đăng nhập")]
@@ -29,7 +24,6 @@ namespace MyStore.Models.ViewModel
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; }
 
-        /* ---------- Thông tin cá nhân (bảng Customer) ---------- */
         [Required(ErrorMessage = "Họ tên không được để trống")]
         [StringLength(100)]
         [Display(Name = "Họ tên")]
