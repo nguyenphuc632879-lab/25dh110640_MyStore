@@ -7,16 +7,6 @@ using MyStore.Models.ViewModel;
 
 namespace MyStore.Controllers
 {
-    /// <summary>
-    /// BE#8 - Thanh toán bằng PayPal (OPTIONAL).
-    ///
-    /// Để chạy thật: vào Tools > NuGet Package Manager > Package Manager Console chạy
-    ///     Install-Package PayPal
-    /// rồi thay phần demo bên dưới bằng SDK của PayPal và điền ClientId/ClientSecret trong Web.config.
-    ///
-    /// Phiên bản này mô phỏng luồng thanh toán: tạo đơn hàng với trạng thái "Đã thanh toán"
-    /// sau khi người dùng xác nhận trên trang PayPal (giả lập).
-    /// </summary>
     public class PaypalController : BaseController
     {
         [Authorize]
