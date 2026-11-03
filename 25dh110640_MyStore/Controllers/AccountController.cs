@@ -10,8 +10,6 @@ namespace MyStore.Controllers
 {
     public class AccountController : BaseController
     {
-        #region Đăng ký
-
         [HttpGet]
         public ActionResult Register()
         {
@@ -31,7 +29,6 @@ namespace MyStore.Controllers
                 return View(model);
             }
 
-            // 1. Tạo bản ghi trong bảng User
             var user = new User
             {
                 Username = model.Username,
@@ -40,7 +37,6 @@ namespace MyStore.Controllers
             };
             db.Users.Add(user);
 
-            // 2. Tạo bản ghi trong bảng Customer
             var customer = new Customer
             {
                 Username = model.Username,
@@ -52,26 +48,15 @@ namespace MyStore.Controllers
             db.Customers.Add(customer);
 
             db.SaveChanges();
-
-            // Đăng nhập luôn sau khi đăng ký
             SetAuthCookie(model.Username, UserRoles.Customer, false);
 
             return RedirectToAction("Index", "Home");
         }
-
-        /// <summary>
-        /// Dùng cho Remote validation của trường Username
-        /// </summary>
         public JsonResult IsUsernameAvailable(string Username)
         {
             bool exists = db.Users.Any(u => u.Username == Username);
             return Json(!exists, JsonRequestBehavior.AllowGet);
         }
-
-        #endregion
-
-        #region Đăng nhập / Đăng xuất
-
         [HttpGet]
         public ActionResult Login(string returnUrl)
         {
@@ -100,11 +85,8 @@ namespace MyStore.Controllers
                 ViewBag.ReturnUrl = returnUrl;
                 return View(model);
             }
-
-            // Lưu thông tin xác thực vào Cookie
             SetAuthCookie(user.Username, user.UserRole.Trim(), model.RememberMe);
 
-            // Lưu thông tin tài khoản vào Session
             Session["Username"] = user.Username;
             Session["UserRole"] = user.UserRole.Trim();
 
@@ -193,7 +175,6 @@ namespace MyStore.Controllers
                 TempData["Error"] = "Mật khẩu mới phải có ít nhất 6 ký tự";
                 return RedirectToAction("ProfileInfo");
             }
-
             user.Password = model.NewPassword;
             db.Entry(user).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
@@ -201,11 +182,6 @@ namespace MyStore.Controllers
             TempData["Message"] = "Đổi mật khẩu thành công";
             return RedirectToAction("ProfileInfo");
         }
-
-        #endregion
-
-        #region Hàm dùng chung
-
         private void SetAuthCookie(string username, string role, bool rememberMe)
         {
             var ticket = new FormsAuthenticationTicket(
@@ -214,7 +190,7 @@ namespace MyStore.Controllers
                 DateTime.Now,
                 DateTime.Now.AddMinutes(FormsAuthentication.Timeout.TotalMinutes),
                 rememberMe,
-                role,                       // UserData: lưu role để phân quyền
+                role,                       
                 FormsAuthentication.FormsCookiePath);
 
             var encrypted = FormsAuthentication.Encrypt(ticket);
@@ -225,7 +201,5 @@ namespace MyStore.Controllers
             };
             Response.Cookies.Add(cookie);
         }
-
-        #endregion
     }
 }
