@@ -5,9 +5,6 @@ using MyStore.Models;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Controller cơ sở của Area Admin: khởi tạo DbContext + bắt buộc đăng nhập quyền Admin
-    /// </summary>
     [AuthorizeRole(UserRoles.Admin)]
     public class AdminBaseController : Controller
     {
