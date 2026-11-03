@@ -4,9 +4,6 @@ using System.Web.Mvc;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Trang Home của Admin: thống kê (dùng Google Chart)
-    /// </summary>
     public class HomeController : AdminBaseController
     {
         public ActionResult Index()
@@ -20,10 +17,6 @@ namespace MyStore.Areas.Admin.Controllers
 
             return View();
         }
-
-        /// <summary>
-        /// Dữ liệu JSON cho Google Chart: doanh thu theo 6 tháng gần nhất
-        /// </summary>
         public JsonResult GetRevenueChartData()
         {
             var data = db.Orders
@@ -41,10 +34,6 @@ namespace MyStore.Areas.Admin.Controllers
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-
-        /// <summary>
-        /// Dữ liệu JSON: số lượng sản phẩm theo danh mục (PieChart)
-        /// </summary>
         public JsonResult GetCategoryChartData()
         {
             var data = db.Categories
@@ -54,9 +43,6 @@ namespace MyStore.Areas.Admin.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// Dữ liệu JSON: 5 sản phẩm bán chạy nhất
-        /// </summary>
         public JsonResult GetTopProductChartData()
         {
             var data = db.OrderDetails
