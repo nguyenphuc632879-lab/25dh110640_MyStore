@@ -11,7 +11,6 @@ namespace MyStore.Areas.Admin
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            // Thêm namespaces để tránh lỗi trùng HomeController với phần Customer (BE#1)
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
