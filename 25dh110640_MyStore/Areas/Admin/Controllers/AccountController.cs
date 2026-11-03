@@ -7,9 +7,6 @@ using MyStore.Models;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Đăng nhập / Đăng xuất của Admin (không cần filter AuthorizeRole)
-    /// </summary>
     public class AccountController : Controller
     {
         private MyStoreEntities db = new MyStoreEntities();
@@ -30,8 +27,6 @@ namespace MyStore.Areas.Admin.Controllers
                 ViewBag.Error = "Vui lòng nhập tên đăng nhập và mật khẩu";
                 return View();
             }
-
-            // Password là NCHAR(50) -> DB tự thêm khoảng trắng ở cuối, nên phải Trim khi so sánh
             var user = db.Users.FirstOrDefault(u =>
                 u.Username == Username &&
                 u.Password.Trim() == Password.Trim() &&
