@@ -1,4 +1,4 @@
-@* BE#4: Quản lý sản phẩm - Tìm kiếm, Sắp xếp, Phân trang *@
+
 @model MyStore.Models.ViewModel.ProductSearchVM
 @{
     ViewBag.Title = "Quản lý Sản phẩm";
@@ -7,8 +7,6 @@
 <p>
     @Html.ActionLink("+ Thêm mới sản phẩm", "Create", null, new { @class = "btn btn-danger" })
 </p>
-
-<!-- ============ PHẦN TIÊU CHÍ TÌM KIẾM / SẮP XẾP ============ -->
 @using (Html.BeginForm("Index", "Products", FormMethod.Get))
 {
     <div class="row" style="margin-bottom:12px;">
@@ -35,6 +33,4 @@
         </div>
     </div>
 }
-
-<!-- ============ PHẦN KẾT QUẢ (PARTIAL VIEW) ============ -->
 @Html.Partial("PVListProduct", Model)
