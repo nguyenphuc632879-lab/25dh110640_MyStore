@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// ViewModel trang Thông tin tài khoản: xem / cập nhật thông tin + đổi mật khẩu (BE#6)
-    /// </summary>
     public class ProfileVM
     {
         [Display(Name = "Tên đăng nhập")]
@@ -28,7 +25,7 @@ namespace MyStore.Models.ViewModel
         [Display(Name = "Địa chỉ")]
         public string CustomerAddress { get; set; }
 
-        /* ---------------- Đổi mật khẩu ---------------- */
+       
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu hiện tại")]
         public string OldPassword { get; set; }
