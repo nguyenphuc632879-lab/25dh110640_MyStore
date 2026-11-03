@@ -11,9 +11,6 @@ namespace MyStore.Controllers
 {
     public class HomeController : BaseController
     {
-        /// <summary>
-        /// Số lượng đã bán của từng sản phẩm (không tính đơn đã huỷ): ProductID -> tổng số lượng
-        /// </summary>
         private Dictionary<int, int> GetSoldCounts()
         {
             return db.OrderDetails
@@ -29,11 +26,6 @@ namespace MyStore.Controllers
             return sold.TryGetValue(productId, out n) ? n : 0;
         }
 
-        /// <summary>
-        /// Trang chủ: banner + tìm kiếm + sản phẩm nổi bật (top 10 bán chạy nhất, dạng slider)
-        /// + danh sách 20 sản phẩm ít người mua nhất (phân trang 6 sản phẩm/trang).
-        /// Khi tìm kiếm (tên, mô tả hoặc danh mục), kết quả hiển thị đồng thời ở CẢ HAI phần.
-        /// </summary>
         public ActionResult Index(string searchTerm, int? page)
         {
             var model = new HomeProductVM();
@@ -51,15 +43,11 @@ namespace MyStore.Controllers
 
             var matched = products.OrderBy(p => p.ProductID).ToList();
             var sold = GetSoldCounts();
-
-            // Sản phẩm nổi bật: top 10 có nhiều người mua nhất (trong kết quả tìm kiếm)
             model.FeaturedProducts = matched
                 .OrderByDescending(p => SoldOf(sold, p.ProductID))
                 .ThenBy(p => p.ProductID)
                 .Take(10)
                 .ToList();
-
-            // Danh sách sản phẩm: 20 sản phẩm có ít người mua nhất, phân trang 6 sản phẩm / trang
             int pageNumber = page ?? 1;
             model.NewProducts = matched
                 .OrderBy(p => SoldOf(sold, p.ProductID))
@@ -70,9 +58,6 @@ namespace MyStore.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Trang danh sách sản phẩm theo danh mục (có tìm kiếm, lọc khoảng giá, sắp xếp, phân trang)
-        /// </summary>
         public ActionResult ProductList(int? id, string searchTerm, decimal? minPrice, decimal? maxPrice, string sortOrder, int? page)
         {
             var model = new ProductSearchVM
@@ -122,10 +107,6 @@ namespace MyStore.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Trang chi tiết sản phẩm: thông tin sản phẩm (kèm số lượng đã bán) + sản phẩm tương tự
-        /// + Top Deals (bán chạy nhất cùng danh mục, phân trang 3 sản phẩm/trang)
-        /// </summary>
         [HttpGet]
         public ActionResult ProductDetail(int id, int quantity = 1, int? page = 1)
         {
@@ -140,14 +121,10 @@ namespace MyStore.Controllers
                 quantity = quantity < 1 ? 1 : quantity,
                 SoldCount = SoldOf(sold, product.ProductID)
             };
-
-            // 8 sản phẩm cùng danh mục
             model.RelatedProducts = db.Products
                 .Where(p => p.CategoryID == product.CategoryID && p.ProductID != product.ProductID)
                 .OrderBy(p => p.ProductID)
                 .Take(8).ToList();
-
-            // 8 sản phẩm bán chạy nhất cùng danh mục, phân trang 3 sản phẩm / trang
             var top = db.Products
                 .Where(p => p.CategoryID == product.CategoryID)
                 .ToList()
@@ -161,18 +138,12 @@ namespace MyStore.Controllers
             return View(model);
         }
 
-        /// <summary>
-        /// Tìm kiếm phía Customer (kết quả hiển thị lại trên trang Home)
-        /// </summary>
         [HttpGet]
         public ActionResult Search(string searchTerm)
         {
             return RedirectToAction("Index", new { searchTerm = searchTerm });
         }
 
-        /// <summary>
-        /// Partial View: menu danh mục sản phẩm trên Header (_CategoriesPV.cshtml)
-        /// </summary>
         [ChildActionOnly]
         public ActionResult CategoryMenuPV()
         {
