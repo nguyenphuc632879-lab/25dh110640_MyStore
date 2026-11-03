@@ -1,11 +1,9 @@
-/* ===================== MyStore.js - Các hàm JS dùng chung ===================== */
 
-// Xác nhận trước khi xoá
 function confirmDelete(message) {
     return confirm(message || "Bạn có chắc chắn muốn xoá?");
 }
 
-// Tăng / giảm số lượng trên trang chi tiết sản phẩm
+
 function changeQuantity(delta) {
     var input = document.getElementById("quantity");
     if (!input) return;
@@ -14,8 +12,6 @@ function changeQuantity(delta) {
     input.value = value;
     updateSubTotal();
 }
-
-// Tính lại tạm tính (đơn giá x số lượng)
 function updateSubTotal() {
     var input = document.getElementById("quantity");
     var priceEl = document.getElementById("unitPrice");
@@ -27,14 +23,11 @@ function updateSubTotal() {
     var total = price * qty;
     totalEl.innerText = total.toLocaleString("vi-VN") + " đ";
 }
-
-// Bật chế độ chỉnh sửa địa chỉ giao hàng ở trang Thanh toán
 function enableAddressEdit() {
     var box = document.getElementById("newAddressBox");
     if (box) box.style.display = "block";
 }
 
-// Gán địa chỉ mới vào trường ShippingAddress (cột Order.ShippingAddress) trước khi submit
 function updateShippingAddress() {
     var input = document.getElementById("newShippingAddress");
     var hidden = document.getElementById("ShippingAddress");
@@ -44,14 +37,12 @@ function updateShippingAddress() {
     return true;
 }
 
-// Chọn / bỏ chọn tất cả sản phẩm trong giỏ hàng
 function toggleAll(source) {
     var boxes = document.querySelectorAll(".item-check");
     for (var i = 0; i < boxes.length; i++) boxes[i].checked = source.checked;
     updateCartSelection();
 }
 
-// Tính lại số mặt hàng và tổng tiền của các sản phẩm đang được tick chọn mua
 function updateCartSelection() {
     var boxes = document.querySelectorAll(".item-check");
     var total = 0, count = 0;
@@ -67,7 +58,6 @@ function updateCartSelection() {
     if (countEl) countEl.innerText = count;
 }
 
-// Gắn danh sách sản phẩm đã chọn (selectedIds) vào form "Mua hàng"
 function prepareBuyForm() {
     var boxes = document.querySelectorAll(".item-check:checked");
     if (boxes.length === 0) {
@@ -85,8 +75,6 @@ function prepareBuyForm() {
     }
     return true;
 }
-
-// Slider ngang cho phần Sản phẩm nổi bật / Sản phẩm tương tự: cuộn sang trái (-1) hoặc phải (1)
 function slideProducts(btn, dir) {
     var track = btn.parentNode.querySelector(".slider-track");
     if (track) track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: "smooth" });
