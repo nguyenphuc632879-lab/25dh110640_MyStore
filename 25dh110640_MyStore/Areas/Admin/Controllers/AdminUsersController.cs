@@ -8,16 +8,10 @@ using PagedList;
 
 namespace MyStore.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Quản lý tài khoản Admin (CRUD, tìm kiếm, sắp xếp, phân trang).
-    /// Khoá chính của bảng User là Username (NVARCHAR) nên các action dùng id kiểu string.
-    /// </summary>
     public class AdminUsersController : AdminBaseController
     {
-        // GET: Admin/AdminUsers
         public ActionResult Index(AdminUserSearchVM model, int? page)
         {
-            // UserRole NCHAR(1): 'A' = admin, 'C' = customer
             var users = db.Users.Where(u => u.UserRole == UserRoles.Admin).AsQueryable();
 
             if (!string.IsNullOrEmpty(model.SearchTerm))
@@ -36,8 +30,6 @@ namespace MyStore.Areas.Admin.Controllers
 
             return View(model);
         }
-
-        // GET: Admin/AdminUsers/Details/admin
         public ActionResult Details(string id)
         {
             return GetUser(id);
@@ -50,14 +42,10 @@ namespace MyStore.Areas.Admin.Controllers
             if (user == null) return HttpNotFound();
             return View(user);
         }
-
-        // GET: Admin/AdminUsers/Create
         public ActionResult Create()
         {
             return View(new User { UserRole = UserRoles.Admin });
         }
-
-        // POST: Admin/AdminUsers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Username,Password,UserRole")] User user)
@@ -80,8 +68,6 @@ namespace MyStore.Areas.Admin.Controllers
         {
             return GetUser(id);
         }
-
-        // POST: Admin/AdminUsers/Edit/admin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Username,Password,UserRole")] User user)
@@ -95,22 +81,16 @@ namespace MyStore.Areas.Admin.Controllers
             }
             return View(user);
         }
-
-        // GET: Admin/AdminUsers/Delete/admin
         public ActionResult Delete(string id)
         {
             return GetUser(id);
         }
-
-        // POST: Admin/AdminUsers/Delete/admin
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
             var user = db.Users.Find(id);
             if (user == null) return HttpNotFound();
-
-            // Không cho xoá tài khoản đang đăng nhập
             if (user.Username == User.Identity.Name)
             {
                 TempData["Error"] = "Không thể xoá tài khoản đang đăng nhập";
