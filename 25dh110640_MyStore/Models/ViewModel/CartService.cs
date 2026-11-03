@@ -3,9 +3,7 @@ using System.Web;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// Dịch vụ thao tác với giỏ hàng trong Session (BE#7)
-    /// </summary>
+   
     public class CartService
     {
         private readonly HttpSessionStateBase session;
