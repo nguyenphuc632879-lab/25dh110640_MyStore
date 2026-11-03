@@ -6,10 +6,7 @@ using PagedList;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// ViewModel chứa các tiêu chí tìm kiếm + kết quả tìm kiếm sản phẩm (BE#4)
-    /// Admin: Products/Index   |   Customer: Home/Index, Home/ProductList
-    /// </summary>
+  
     public class ProductSearchVM
     {
         [Display(Name = "Từ khoá")]
@@ -33,7 +30,7 @@ namespace MyStore.Models.ViewModel
 
         public int PageSize { get; set; }
 
-        // Kết quả tìm kiếm đã phân trang (PagedList.Mvc)
+      
         public IPagedList<Product> Products { get; set; }
 
         public ProductSearchVM()
