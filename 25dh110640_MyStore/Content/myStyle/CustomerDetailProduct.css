@@ -1,4 +1,3 @@
-/* ====== CustomerDetailProduct.css - Style riêng trang Chi tiết sản phẩm ====== */
 
 .detail-box {
     background: #fff;
@@ -63,7 +62,6 @@
     margin-left: 15px;
 }
 
-/* ------------------------- Sản phẩm liên quan -------------------------- */
 .related-box {
     background: #fff;
     border-radius: 6px;
@@ -75,7 +73,6 @@
     height: 260px;
 }
 
-/* ------------------------------ Top deals ------------------------------ */
 .top-deals .product-card {
     height: 280px;
 }
