@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyStore.Models.ViewModel
 {
-    /// <summary>
-    /// Thông tin 1 mặt hàng trong giỏ hàng (BE#7 - Giỏ hàng cơ bản)
-    /// </summary>
     public class CartItem
     {
         public int ProductID { get; set; }
