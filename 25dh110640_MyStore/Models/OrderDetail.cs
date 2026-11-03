@@ -3,15 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyStore.Models
 {
-    /// <summary>
-    /// Lớp ánh xạ bảng [OrderDetail] theo đúng file database2024.sql:
-    ///     ID        INT IDENTITY(1,1)  - khoá chính (tên cột là ID)
-    ///     ProductID INT            NOT NULL - FK -> Product
-    ///     OrderID   INT            NOT NULL - FK -> Order
-    ///     Quantity  INT            NOT NULL
-    ///     UnitPrice DECIMAL(18,2)  NOT NULL
-    ///     TotalPrice AS (Quantity * UnitPrice) PERSISTED - cột tính toán, bổ sung bằng Database/02_UpdateOrderTables.sql
-    /// </summary>
     [Table("OrderDetail")]
     public partial class OrderDetail
     {
@@ -34,7 +25,7 @@ namespace MyStore.Models
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
         public decimal UnitPrice { get; set; }
 
-        // Cột tính toán trong DB: TotalPrice AS (Quantity * UnitPrice) PERSISTED
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Display(Name = "Thành tiền")]
         [DisplayFormat(DataFormatString = "{0:#,##0}")]
