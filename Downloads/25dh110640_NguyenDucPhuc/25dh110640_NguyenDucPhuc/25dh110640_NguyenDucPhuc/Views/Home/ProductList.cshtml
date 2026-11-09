@@ -1,0 +1,73 @@
+@model MyStore.Models.ViewModel.ProductSearchVM
+@{
+    ViewBag.Title = ViewBag.CategoryName;
+}
+
+<h3 class="section-title">@ViewBag.CategoryName</h3>
+
+@using (Html.BeginForm("ProductList", "Home", FormMethod.Get))
+{
+    @Html.Hidden("id", Model.CategoryID)
+    <div class="row" style="margin-bottom:15px;">
+        <div class="col-md-2">
+            @Html.TextBox("searchTerm", Model.SearchTerm, new { @class = "form-control", placeholder = "Nhập từ khoá..." })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("minPrice", Model.MinPrice, new { @class = "form-control", placeholder = "Giá từ", type = "number", min = "0" })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("maxPrice", Model.MaxPrice, new { @class = "form-control", placeholder = "Giá đến", type = "number", min = "0" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("sortOrder", new SelectList(new[]
+            {
+                new { Value = "", Text = "Sắp xếp mặc định" },
+                new { Value = "name", Text = "Tên: A → Z" },
+                new { Value = "name_desc", Text = "Tên: Z → A" },
+                new { Value = "price", Text = "Giá: thấp → cao" },
+                new { Value = "price_desc", Text = "Giá: cao → thấp" }
+            }, "Value", "Text", Model.SortOrder), new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+        </div>
+    </div>
+}
+
+<div class="product-grid">
+    @foreach (var item in Model.Products)
+    {
+        <div class="product-card">
+            <a href="@Url.Action("ProductDetail", "Home", new { id = item.ProductID })">
+                <img src="@Url.Content(item.ProductImage ?? "~/Content/images/default.png")" alt="@item.ProductName" class="img-responsive center-block" />
+                <div class="product-name">@item.ProductName</div>
+            </a>
+            <div class="text-muted" style="font-size:12px;">
+                @(item.Category != null ? item.Category.CategoryName : "")
+            </div>
+            <div class="product-price">@String.Format("{0:#,##0}", item.ProductPrice) đ</div>
+            <div style="margin-top:8px;">
+                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@item.ProductID" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn-buy"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Products.Any())
+{
+    <div class="alert alert-info">Không tìm thấy sản phẩm nào.</div>
+}
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model.Products, page => Url.Action("ProductList", "Home",
+        new { id = Model.CategoryID, page = page, searchTerm = Model.SearchTerm, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice, sortOrder = Model.SortOrder }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+<p>@Html.ActionLink("← Quay về trang chủ", "Index", "Home")</p>

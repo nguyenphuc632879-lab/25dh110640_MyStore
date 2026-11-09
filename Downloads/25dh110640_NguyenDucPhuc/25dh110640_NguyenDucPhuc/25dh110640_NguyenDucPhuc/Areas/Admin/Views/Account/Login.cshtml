@@ -1,0 +1,47 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Trang quản trị</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" />
+</head>
+<body>
+    <div class="container" style="max-width:420px;margin-top:80px;">
+        <div class="form-title">Đăng nhập hệ thống quản trị</div>
+        <div class="form-box">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+
+            <form method="post" action="@Url.Action("Login", "Account", new { area = "Admin", returnUrl = ViewBag.ReturnUrl })">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" name="Username" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" name="Password" class="form-control" required />
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="RememberMe" value="true" /> Ghi nhớ đăng nhập</label>
+                </div>
+                <button type="submit" class="btn btn-danger btn-block">Đăng nhập</button>
+            </form>
+
+            <hr />
+            <p class="text-muted" style="font-size:13px;">
+                Tài khoản mặc định (tạo trong script CSDL): <code>admin / 123456</code>
+            </p>
+            <p>@Html.ActionLink("← Về trang khách hàng", "Index", "Home", new { area = "" }, null)</p>
+        </div>
+    </div>
+</body>
+</html>

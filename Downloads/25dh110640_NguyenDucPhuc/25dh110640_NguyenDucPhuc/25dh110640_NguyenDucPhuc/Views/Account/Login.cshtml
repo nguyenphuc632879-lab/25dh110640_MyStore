@@ -1,0 +1,32 @@
+@model MyStore.Models.ViewModel.LoginVM
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<h3 class="section-title">Đăng nhập</h3>
+
+@using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-title">Thông tin đăng nhập</div>
+    <div class="form-box">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="checkbox">
+            <label>@Html.CheckBoxFor(m => m.RememberMe) Ghi nhớ đăng nhập</label>
+        </div>
+
+        <button type="submit" class="btn btn-danger">Đăng nhập</button>
+        @Html.ActionLink("Chưa có tài khoản? Đăng ký", "Register", "Account", null, new { @class = "btn btn-link" })
+    </div>
+}

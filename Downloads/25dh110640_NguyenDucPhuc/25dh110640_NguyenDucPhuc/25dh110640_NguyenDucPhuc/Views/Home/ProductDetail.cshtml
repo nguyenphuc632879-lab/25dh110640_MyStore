@@ -1,0 +1,64 @@
+﻿@model MyStore.Models.ViewModel.ProductDetailVM
+@{
+    ViewBag.Title = Model.product.ProductName;
+}
+
+<div class="detail-box">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="detail-image">
+                <img src="@Url.Content(Model.product.ProductImage ?? "~/Content/images/default.png")" alt="@Model.product.ProductName" />
+            </div>
+        </div>
+
+        <div class="col-md-7 detail-info">
+            <h2>@Model.product.ProductName</h2>
+            <p class="text-muted">
+                Danh mục: <strong>@(Model.product.Category != null ? Model.product.Category.CategoryName : "")</strong>
+            </p>
+            <div class="detail-price" id="unitPrice" data-price="@Model.product.ProductPrice">
+                @String.Format("{0:#,##0}", Model.product.ProductPrice) đ
+            </div>
+            <p class="text-muted">Đã bán: <strong>@Model.SoldCount</strong></p>
+            <div class="detail-desc">
+                @Html.Raw((Model.product.ProductDescription ?? "").Replace("\n", "<br/>"))
+            </div>
+
+            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="productId" value="@Model.product.ProductID" />
+
+                <div class="detail-quantity">
+                    <button type="button" class="btn btn-default" onclick="changeQuantity(-1)">-</button>
+                    <input type="number" id="quantity" name="quantity" value="@Model.quantity" min="1" class="form-control" />
+                    <button type="button" class="btn btn-default" onclick="changeQuantity(1)">+</button>
+                    <span class="sub-total">
+                        Tạm tính: <span id="subTotal">@String.Format("{0:#,##0}", Model.product.ProductPrice * Model.quantity) đ</span>
+                    </span>
+                </div>
+
+                <div class="detail-actions">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                    </button>
+                    <button type="submit" class="btn btn-danger" formaction="@Url.Action("BuyNow", "Cart")">
+                        Mua ngay
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<h3 class="section-title">Sản phẩm tương tự</h3>
+@Html.Partial("_PVRelatedProduct", Model)
+
+<h3 class="section-title">Top Deals</h3>
+@Html.Partial("_PVTopProduct", Model)
+
+@section scripts {
+    <script>
+        $(function () { updateSubTotal(); });
+    </script>
+}

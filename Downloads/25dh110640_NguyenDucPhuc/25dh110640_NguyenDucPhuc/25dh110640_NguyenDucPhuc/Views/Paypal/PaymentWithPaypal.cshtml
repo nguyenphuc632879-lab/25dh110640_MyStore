@@ -1,0 +1,31 @@
+@model MyStore.Models.ViewModel.CheckoutVM
+@{
+    ViewBag.Title = "Thanh toán PayPal";
+}
+
+<h3 class="section-title">Thanh toán qua PayPal</h3>
+
+<div class="alert alert-info">
+    <strong>Lưu ý:</strong> Đây là trang mô phỏng luồng thanh toán PayPal (chế độ <code>@ViewBag.PayPalMode</code>).
+    Để tích hợp thật: cài gói <code>Install-Package PayPal</code>, điền ClientId / ClientSecret trong Web.config
+    rồi thay đoạn giả lập bên dưới bằng SDK của PayPal.
+</div>
+
+<div class="form-box">
+    <p>Số tiền cần thanh toán:
+        <strong class="text-danger" style="font-size:20px;">
+            @String.Format("{0:#,##0}", Model.CartItems.Sum(i => i.TotalPrice)) đ
+        </strong>
+    </p>
+    <p>Địa chỉ giao hàng: @Model.ShippingAddress</p>
+
+    @using (Html.BeginForm("PaymentSuccess", "Paypal", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-paypal"></i> Xác nhận thanh toán (giả lập)
+        </button>
+    }
+
+    @Html.ActionLink("Huỷ thanh toán", "PaymentCancel", "Paypal", null, new { @class = "btn btn-default" })
+</div>

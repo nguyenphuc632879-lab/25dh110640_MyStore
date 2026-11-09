@@ -1,0 +1,23 @@
+@model MyStore.Models.Product
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+}
+
+<div class="form-title">Cập nhật sản phẩm</div>
+<div class="form-box">
+    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.ProductID)
+        @Html.Partial("PVCreateEditProduct", Model)
+
+        <div class="form-group">
+            <img src="@Url.Content(Model.ProductImage ?? "~/Content/images/default.png")" style="max-height:120px;" />
+        </div>
+
+        <button type="submit" class="btn btn-danger">Lưu thay đổi</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

@@ -1,0 +1,39 @@
+@model IEnumerable<MyStore.Models.Category>
+@{
+    ViewBag.Title = "Quản lý Danh mục";
+}
+
+<p>
+    @Html.ActionLink("+ Thêm mới danh mục", "Create", null, new { @class = "btn btn-danger" })
+</p>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th style="width:80px;">Mã danh mục</th>
+            <th>Tên danh mục</th>
+            <th>Số sản phẩm</th>
+            <th style="width:220px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryID</td>
+                <td>@item.CategoryName</td>
+                <td>@(item.Products != null ? item.Products.Count : 0)</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.CategoryID }, new { @class = "btn btn-info btn-sm" })
+                    @Html.ActionLink("Sửa", "Edit", new { id = item.CategoryID }, new { @class = "btn btn-warning btn-sm" })
+                    @Html.ActionLink("Xoá", "Delete", new { id = item.CategoryID }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Chưa có danh mục nào.</div>
+}

@@ -1,0 +1,25 @@
+@model MyStore.Models.ViewModel.HomeProductVM
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<div class="home-banner">
+    <div class="banner-content text-center">
+        <h2>Siêu thị Online MyStore</h2>
+        <p>Hàng ngàn sản phẩm chính hãng - Giao hàng toàn quốc</p>
+
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <div class="home-search">
+                @Html.TextBox("searchTerm", Model.SearchTerm, new { @class = "", placeholder = "Tìm kiếm sản phẩm..." })
+                <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+            </div>
+        }
+    </div>
+</div>
+
+<h3 class="section-title">Sản phẩm nổi bật</h3>
+@Html.Partial("_PVFeatureProduct", Model)
+
+<h3 class="section-title">Danh sách sản phẩm</h3>
+@Html.Partial("_PVNewProduct", Model)

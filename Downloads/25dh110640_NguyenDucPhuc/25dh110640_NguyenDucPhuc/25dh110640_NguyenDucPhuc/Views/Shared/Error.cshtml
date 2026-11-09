@@ -1,0 +1,16 @@
+@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Lỗi";
+}
+
+<h3 class="section-title">Đã xảy ra lỗi</h3>
+
+<div class="alert alert-danger">
+    <p>Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn.</p>
+    @if (Model != null && Model.Exception != null)
+    {
+        <p><strong>@Model.Exception.Message</strong></p>
+    }
+</div>
+
+<p>@Html.ActionLink("← Về trang chủ", "Index", "Home", null, new { @class = "btn btn-default" })</p>

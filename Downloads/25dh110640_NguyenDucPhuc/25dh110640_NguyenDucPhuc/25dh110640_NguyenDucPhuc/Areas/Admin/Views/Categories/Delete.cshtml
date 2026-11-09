@@ -1,0 +1,23 @@
+@model MyStore.Models.Category
+@{
+    ViewBag.Title = "Xoá danh mục";
+}
+
+<div class="form-title">Xoá danh mục</div>
+<div class="form-box">
+    <h4>Bạn có chắc chắn muốn xoá danh mục này?</h4>
+    <dl class="dl-horizontal">
+        <dt>Mã danh mục</dt>
+        <dd>@Html.DisplayFor(model => model.CategoryID)</dd>
+
+        <dt>Tên danh mục</dt>
+        <dd>@Html.DisplayFor(model => model.CategoryName)</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Xoá</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

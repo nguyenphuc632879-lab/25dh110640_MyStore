@@ -1,0 +1,105 @@
+@{
+    ViewBag.Title = "Thống kê";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="stat-box">
+            <p>Danh mục</p>
+            <h3>@ViewBag.TotalCategories</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-box">
+            <p>Sản phẩm</p>
+            <h3>@ViewBag.TotalProducts</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-box">
+            <p>Khách hàng</p>
+            <h3>@ViewBag.TotalCustomers</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-box">
+            <p>Đơn hàng</p>
+            <h3>@ViewBag.TotalOrders</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="stat-box">
+            <p>Tổng doanh thu</p>
+            <h3>@String.Format("{0:#,##0}", ViewBag.TotalRevenue) đ</h3>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="stat-box">
+            <p>Đơn chờ thanh toán</p>
+            <h3>@ViewBag.PendingOrders</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="chart-box">
+            <h4 style="margin-top:0;">Doanh thu theo tháng</h4>
+            <div id="revenueChart" style="height:320px;"></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="chart-box">
+            <h4 style="margin-top:0;">Sản phẩm theo danh mục</h4>
+            <div id="categoryChart" style="height:320px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="chart-box">
+            <h4 style="margin-top:0;">Top 5 sản phẩm bán chạy nhất</h4>
+            <div id="topProductChart" style="height:320px;"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawCharts);
+
+    function drawCharts() {
+        $.getJSON('@Url.Action("GetRevenueChartData", "Home", new { area = "Admin" })', function (data) {
+            var dt = new google.visualization.DataTable();
+            dt.addColumn('string', 'Tháng');
+            dt.addColumn('number', 'Doanh thu');
+            $.each(data, function (i, r) { dt.addRow([r.label, Number(r.value)]); });
+            var chart = new google.visualization.ColumnChart(document.getElementById('revenueChart'));
+            chart.draw(dt, { legend: { position: 'bottom' }, colors: ['#ff6a00'] });
+        });
+
+        $.getJSON('@Url.Action("GetCategoryChartData", "Home", new { area = "Admin" })', function (data) {
+            var dt = new google.visualization.DataTable();
+            dt.addColumn('string', 'Danh mục');
+            dt.addColumn('number', 'Số sản phẩm');
+            $.each(data, function (i, r) { dt.addRow([r.label, Number(r.value)]); });
+            var chart = new google.visualization.PieChart(document.getElementById('categoryChart'));
+            chart.draw(dt, { legend: { position: 'bottom' } });
+        });
+
+        $.getJSON('@Url.Action("GetTopProductChartData", "Home", new { area = "Admin" })', function (data) {
+            var dt = new google.visualization.DataTable();
+            dt.addColumn('string', 'Sản phẩm');
+            dt.addColumn('number', 'Đã bán');
+            $.each(data, function (i, r) { dt.addRow([r.label, Number(r.value)]); });
+            var chart = new google.visualization.BarChart(document.getElementById('topProductChart'));
+            chart.draw(dt, { legend: { position: 'bottom' }, colors: ['#e52e71'] });
+        });
+    }
+</script>
+}

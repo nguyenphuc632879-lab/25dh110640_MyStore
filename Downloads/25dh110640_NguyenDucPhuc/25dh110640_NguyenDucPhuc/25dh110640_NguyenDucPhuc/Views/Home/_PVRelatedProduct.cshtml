@@ -1,0 +1,24 @@
+@model MyStore.Models.ViewModel.ProductDetailVM
+@{
+    Layout = null;
+}
+<div class="related-box featured-slider">
+    <button type="button" class="slider-btn slider-prev" onclick="slideProducts(this, -1)" aria-label="Trước">&lsaquo;</button>
+    <div class="slider-track">
+        @foreach (var item in Model.RelatedProducts)
+        {
+            <div class="featured-item">
+                <a href="@Url.Action("ProductDetail", "Home", new { id = item.ProductID })">
+                    <img src="@Url.Content(item.ProductImage ?? "~/Content/images/default.png")" alt="@item.ProductName" class="img-responsive center-block" />
+                    <div class="product-name">@item.ProductName</div>
+                    <div class="product-price">@String.Format("{0:#,##0}", item.ProductPrice) đ</div>
+                </a>
+            </div>
+        }
+    </div>
+    <button type="button" class="slider-btn slider-next" onclick="slideProducts(this, 1)" aria-label="Sau">&rsaquo;</button>
+</div>
+@if (!Model.RelatedProducts.Any())
+{
+    <p class="text-muted">Không có sản phẩm tương tự.</p>
+}

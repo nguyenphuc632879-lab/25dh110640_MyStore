@@ -1,0 +1,48 @@
+﻿@model MyStore.Models.Order
+@{
+    ViewBag.Title = "Chi tiết đơn hàng #" + Model.OrderID;
+}
+
+<div class="form-title">Đơn hàng #@Model.OrderID</div>
+<div class="form-box">
+    <dl class="dl-horizontal">
+        <dt>Khách hàng</dt>
+        <dd>@(Model.Customer != null ? Model.Customer.CustomerName : "") (@(Model.Customer != null ? Model.Customer.Username : ""))</dd>
+        <dt>Ngày đặt</dt>
+        <dd>@String.Format("{0:dd/MM/yyyy}", Model.OrderDate)</dd>
+        <dt>Địa chỉ giao</dt>
+        <dd>@Model.ShippingAddress</dd>
+        <dt>Trạng thái</dt>
+        <dd>@Model.PaymentStatus</dd>
+    </dl>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th style="width:80px;">Số lượng</th>
+                <th style="width:140px;">Đơn giá</th>
+                <th style="width:140px;">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@(d.Product != null ? d.Product.ProductName : "#" + d.ProductID)</td>
+                    <td>@d.Quantity</td>
+                    <td>@String.Format("{0:#,##0}", d.UnitPrice) đ</td>
+                    <td>@String.Format("{0:#,##0}", d.TotalPrice) đ</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3" class="text-right">Tổng cộng</th>
+                <th class="text-danger">@String.Format("{0:#,##0}", Model.TotalAmount) đ</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    @Html.ActionLink("← Quay lại", "Index", "Orders", null, new { @class = "btn btn-default" })
+</div>

@@ -1,0 +1,19 @@
+@model MyStore.Models.Category
+@{
+    ViewBag.Title = "Cập nhật danh mục";
+}
+
+<div class="form-title">Cập nhật danh mục</div>
+<div class="form-box">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.CategoryID)
+        @Html.Partial("PVCreateEditCategory", Model)
+
+        <button type="submit" class="btn btn-danger">Lưu thay đổi</button>
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+    }
+</div>

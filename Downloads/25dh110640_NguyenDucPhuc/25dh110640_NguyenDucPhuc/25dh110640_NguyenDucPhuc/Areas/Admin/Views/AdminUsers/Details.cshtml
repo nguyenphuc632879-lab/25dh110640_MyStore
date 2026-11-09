@@ -1,0 +1,19 @@
+@model MyStore.Models.User
+@{
+    ViewBag.Title = "Chi tiết tài khoản Admin";
+}
+
+<div class="form-title">Chi tiết tài khoản Admin</div>
+<div class="form-box">
+    <dl class="dl-horizontal">
+        <dt>Tên đăng nhập</dt>
+        <dd>@Html.DisplayFor(m => m.Username)</dd>
+        <dt>Mật khẩu</dt>
+        <dd>@Html.DisplayFor(m => m.Password)</dd>
+        <dt>Quyền</dt>
+        <dd>@MyStore.Models.UserRoles.GetDisplayName(Model.UserRole)</dd>
+    </dl>
+
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.Username }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-default" })
+</div>
