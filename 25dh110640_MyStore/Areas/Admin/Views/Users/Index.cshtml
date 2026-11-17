@@ -1,0 +1,64 @@
+﻿@model _25dh110640_MyStore.Models.ViewModel.UserSearchVM
+
+@{
+    ViewBag.Title = "Tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .search-container {
+        padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<h2 class="bg-success">QUẢN LÝ TÀI KHOẢN</h2>
+
+@using (Html.BeginForm("Index", "Users", FormMethod.Get))
+{
+    <div class="form-group search-container">
+        @Html.TextBoxFor(m => m.SearchTerm, new
+        {
+            @class = "form-control",
+            placeholder = "Nhập tên tài khoản hoặc vai trò"
+        })
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+}
+
+@if (Model.Users != null && Model.Users.Any())
+{
+    <table class="table bg-info">
+        <thead>
+            <tr>
+                <th class="bg-success">TÊN TÀI KHOẢN</th>
+                <th class="bg-success">VAI TRÒ</th>
+                <th class="bg-success"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.UserRole</td>
+                    <td>
+                        @Html.ActionLink("Cập nhật", "Edit", new { id = user.Username }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Chi tiết", "Details", new { id = user.Username }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Xóa", "Delete", new { id = user.Username }, new { @class = "btn btn-primary btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.Partial("PVPager", Model)
+}
+else
+{
+    <p>Không tìm được tài khoản nào phù hợp.</p>
+}
+
+<p>@Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })</p>

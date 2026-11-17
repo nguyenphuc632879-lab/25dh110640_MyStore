@@ -1,0 +1,32 @@
+﻿@model _25dh110640_MyStore.Models.User
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">CẬP NHẬP TÀI KHOẢN</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Username)
+
+        <div class="form-group">
+            <div class="control-label col-md-2">Tên tài khoản</div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Username)
+            </div>
+        </div>
+
+        @Html.Partial("PVCreateEditUser", Model)
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

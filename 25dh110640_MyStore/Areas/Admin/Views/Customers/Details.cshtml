@@ -1,0 +1,66 @@
+﻿@model _25dh110640_MyStore.Models.Customer
+
+@{
+    ViewBag.Title = "Chi tiết khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">THÔNG TIN CHI TIẾT KHÁCH HÀNG</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Mã khách hàng</dt>
+        <dd>@Model.CustomerID</dd>
+
+        <dt>Họ và tên</dt>
+        <dd>@Model.CustomerName</dd>
+
+        <dt>Điện thoại</dt>
+        <dd>@Model.CustomerPhone</dd>
+
+        <dt>Email</dt>
+        <dd>@Model.CustomerEmail</dd>
+
+        <dt>Địa chỉ</dt>
+        <dd>@Model.CustomerAddress</dd>
+
+        <dt>Tài khoản</dt>
+        <dd>@Model.Username</dd>
+    </dl>
+</div>
+
+<h3 class="bg-success">DANH SÁCH ĐƠN HÀNG</h3>
+
+@if (Model.Orders != null && Model.Orders.Any())
+{
+    <table class="table bg-info">
+        <thead>
+            <tr>
+                <th class="bg-success">MÃ ĐƠN</th>
+                <th class="bg-success">NGÀY ĐẶT</th>
+                <th class="bg-success">TỔNG TIỀN</th>
+                <th class="bg-success">THANH TOÁN</th>
+                <th class="bg-success"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders.OrderByDescending(o => o.OrderDate))
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                    <td>@order.TotalAmount.ToString("N2")</td>
+                    <td>@order.PaymentStatus</td>
+                    <td>@Html.ActionLink("Chi tiết", "Details", "Orders", new { id = order.OrderID }, new { @class = "btn btn-primary btn-sm" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Khách hàng chưa có đơn hàng nào.</p>
+}
+
+<p>@Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary btn-sm" })</p>

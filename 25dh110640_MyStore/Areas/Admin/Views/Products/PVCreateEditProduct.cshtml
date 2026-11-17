@@ -1,0 +1,51 @@
+﻿@model _25dh110640_MyStore.Models.Product
+
+<div class="form-group">
+    <div class="control-label col-md-2">Danh mục</div>
+    <div class="col-md-10">
+        @Html.DropDownList("CategoryID", null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="control-label col-md-2">Tên sản phẩm</div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="control-label col-md-2">Mô tả</div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ProductDecription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ProductDecription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="control-label col-md-2">Đơn giá</div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="control-label col-md-2">Hình ảnh</div>
+    <div class="col-md-10">
+        @if (!string.IsNullOrEmpty(Model.ProductImage))
+        {
+            <img src="@Url.Content(Model.ProductImage)" style="height:100px;max-width:150px;" onerror="this.onerror=null;this.src='@Url.Content("~/Content/images/default.png")';" />
+        }
+        @Html.TextBoxFor(model => model.UploadImg, new { type = "file", @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Lưu" class="btn btn-primary" />
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary btn-sm" })
+    </div>
+</div>

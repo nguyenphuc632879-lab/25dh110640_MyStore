@@ -1,0 +1,75 @@
+﻿@model _25dh110640_MyStore.Models.ViewModel.OrderListVM
+
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .search-container {
+        padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<h2 class="bg-success">
+    DANH SÁCH ĐƠN HÀNG
+    @if (!string.IsNullOrEmpty(Model.CustomerName))
+    {
+        <span>CỦA KHÁCH HÀNG @Model.CustomerName</span>
+    }
+</h2>
+
+@using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+{
+    @Html.Hidden("customerId", Model.CustomerID)
+    <div class="form-group search-container">
+        @Html.TextBoxFor(m => m.SearchTerm, new
+        {
+            @class = "form-control",
+            placeholder = "Nhập tên khách hàng, trạng thái thanh toán hoặc địa chỉ giao hàng"
+        })
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+}
+
+@if (Model.Orders != null && Model.Orders.Any())
+{
+    <table class="table bg-info">
+        <thead>
+            <tr>
+                <th class="bg-success">MÃ ĐƠN</th>
+                <th class="bg-success">KHÁCH HÀNG</th>
+                <th class="bg-success">NGÀY ĐẶT</th>
+                <th class="bg-success">TỔNG TIỀN</th>
+                <th class="bg-success">THANH TOÁN</th>
+                <th class="bg-success">ĐỊA CHỈ GIAO HÀNG</th>
+                <th class="bg-success"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.Customer.CustomerName</td>
+                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                    <td>@order.TotalAmount.ToString("N2")</td>
+                    <td>@order.PaymentStatus</td>
+                    <td>@order.AddressDelivery</td>
+                    <td>@Html.ActionLink("Chi tiết", "Details", new { id = order.OrderID }, new { @class = "btn btn-primary btn-sm" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.Partial("PVPager", Model)
+}
+else
+{
+    <p>Không tìm được đơn hàng nào phù hợp.</p>
+}
+
+<p>@Html.ActionLink("Danh sách khách hàng", "Index", "Customers", null, new { @class = "btn btn-primary btn-sm" })</p>

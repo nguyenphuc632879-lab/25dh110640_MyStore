@@ -1,0 +1,78 @@
+﻿@model _25dh110640_MyStore.Models.ViewModel.CustomerSearchVM
+
+@{
+    ViewBag.Title = "Khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .search-container, .order-container {
+        padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<h2 class="bg-success">QUẢN LÝ KHÁCH HÀNG</h2>
+
+@using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+{
+    <div class="form-group search-container">
+        @Html.TextBoxFor(m => m.SearchTerm, new
+        {
+            @class = "form-control",
+            placeholder = "Nhập tên, email, số điện thoại hoặc tài khoản"
+        })
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+
+    <div class="form-group order-container">
+        Sắp xếp theo:
+        @Html.ActionLink("Tên tăng dần", "Index", new { sortOrder = "name_asc", searchTerm = Model.SearchTerm })
+        |
+        @Html.ActionLink("Tên giảm dần", "Index", new { sortOrder = "name_desc", searchTerm = Model.SearchTerm })
+        |
+        @Html.ActionLink("Mã tăng dần", "Index", new { sortOrder = "id_asc", searchTerm = Model.SearchTerm })
+        |
+        @Html.ActionLink("Mã giảm dần", "Index", new { sortOrder = "id_desc", searchTerm = Model.SearchTerm })
+    </div>
+}
+
+@if (Model.Customers != null && Model.Customers.Any())
+{
+    <table class="table bg-info">
+        <thead>
+            <tr>
+                <th class="bg-success">MÃ KH</th>
+                <th class="bg-success">HỌ VÀ TÊN</th>
+                <th class="bg-success">ĐIỆN THOẠI</th>
+                <th class="bg-success">ĐỊA CHỈ EMAIL</th>
+                <th class="bg-success">TÀI KHOẢN</th>
+                <th class="bg-success"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model.Customers)
+            {
+                <tr>
+                    <td>@customer.CustomerID</td>
+                    <td>@customer.CustomerName</td>
+                    <td>@customer.CustomerPhone</td>
+                    <td>@customer.CustomerEmail</td>
+                    <td>@customer.Username</td>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "Details", new { id = customer.CustomerID }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Đơn hàng", "Index", "Orders", new { customerId = customer.CustomerID }, new { @class = "btn btn-primary btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.Partial("PVPager", Model)
+}
+else
+{
+    <p>Không tìm được khách hàng nào phù hợp.</p>
+}

@@ -1,0 +1,23 @@
+﻿@model _25dh110640_MyStore.Models.ViewModel.PagerVM
+
+@if (Model.TotalPages > 1)
+{
+    string actionName = (string)ViewContext.RouteData.Values["action"];
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            var routeValues = new RouteValueDictionary();
+            foreach (string key in Request.QueryString.AllKeys)
+            {
+                if (key != null && key != "page")
+                {
+                    routeValues[key] = Request.QueryString[key];
+                }
+            }
+            routeValues["page"] = i;
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                @Html.ActionLink(i.ToString(), actionName, routeValues, new Dictionary<string, object> { { "class", "page-link" } })
+            </li>
+        }
+    </ul>
+}

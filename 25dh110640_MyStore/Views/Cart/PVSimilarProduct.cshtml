@@ -1,0 +1,26 @@
+@model _25dh110640_MyStore.Models.ViewModel.Cart
+
+@{
+    var products = Model != null ? Model.SimilarProducts : null;
+}
+
+@if (products != null && products.Any())
+{
+    <h3 class="section-title">Có thể bạn cũng thích</h3>
+    <div class="list-container">
+        @foreach (var product in products)
+        {
+            <div class="similar-product-item">
+                <a href="@Url.Action("ProductDetails", "Home", new { id = product.ProductID })">
+                    <img src="@Url.Content(string.IsNullOrWhiteSpace(product.ProductImage) ? "~/Content/images/default.png" : product.ProductImage)"
+                         alt="@product.ProductName" />
+                    <span class="product-name">@product.ProductName</span>
+                </a>
+                <div class="product-price">@product.ProductPrice.ToString("#,##0").Replace(",", ".") đ</div>
+                <a class="btn-add-cart" href="@Url.Action("AddToCart", "Cart", new { id = product.ProductID })">
+                    Thêm vào giỏ
+                </a>
+            </div>
+        }
+    </div>
+}

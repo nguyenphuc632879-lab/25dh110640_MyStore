@@ -1,0 +1,59 @@
+﻿@model List<_25dh110640_MyStore.Models.ViewModel.CategoryStatVM>
+
+@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    string chartRows = string.Concat(Model.Select(s => ",['" + HttpUtility.JavaScriptStringEncode(s.CategoryName) + "'," + s.Quantity + "]"));
+}
+
+<h2 class="bg-success">THỐNG KÊ HÀNG HÓA TỪNG LOẠI</h2>
+
+<table class="table bg-info">
+    <thead>
+        <tr>
+            <th class="bg-success">LOẠI HÀNG</th>
+            <th class="bg-success">SỐ LƯỢNG</th>
+            <th class="bg-success">GIÁ CAO NHẤT</th>
+            <th class="bg-success">GIÁ THẤP NHẤT</th>
+            <th class="bg-success">GIÁ TRUNG BÌNH</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryName</td>
+                <td>@item.Quantity</td>
+                <td>@item.MaxPrice.ToString("N2")</td>
+                <td>@item.MinPrice.ToString("N2")</td>
+                <td>@item.AvgPrice.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button type="button" id="btnChart" class="btn btn-primary">Xem biểu đồ</button>
+
+<div id="chartBox" style="display:none;">
+    <h2 class="bg-success">BIỂU ĐỒ THỐNG KÊ</h2>
+    <div id="piechart" style="width:100%;height:450px;"></div>
+</div>
+
+@section Scripts {
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([['Loại hàng', 'Số lượng']@Html.Raw(chartRows)]);
+            var options = { title: 'TỶ LỆ HÀNG HÓA', is3D: true };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+
+        document.getElementById('btnChart').addEventListener('click', function () {
+            document.getElementById('chartBox').style.display = 'block';
+            drawChart();
+        });
+    </script>
+}

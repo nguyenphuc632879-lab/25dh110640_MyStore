@@ -1,0 +1,31 @@
+﻿@model _25dh110640_MyStore.Models.User
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">XÓA TÀI KHOẢN</h2>
+
+<h3>Bạn chắc là muốn xóa tài khoản này chứ?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Tên tài khoản</dt>
+        <dd>@Html.DisplayFor(model => model.Username)</dd>
+
+        <dt>Vai trò</dt>
+        <dd>@Html.DisplayFor(model => model.UserRole)</dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-primary" /> |
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary btn-sm" })
+        </div>
+    }
+</div>
